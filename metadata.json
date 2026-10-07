@@ -1,0 +1,6 @@
+{
+  "name": "Maraña Crochet - Amigurumis y Peluches Artesanales",
+  "description": "Tienda en línea y panel de taller artesanal para Maraña Crochet: catálogo de amigurumis cósmicos, reserva de stock en tiempo real, checkout con transferencia bancaria y backoffice de gestión.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
