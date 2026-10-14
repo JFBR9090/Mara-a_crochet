@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { maranaApi } from './services/api';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
@@ -47,6 +48,41 @@ export default function App() {
   ) => {
     setToast({ message, subMessage, type });
   };
+
+  // Carga inicial desde base de datos MySQL en XAMPP
+  useEffect(() => {
+    let isMounted = true;
+    async function initDatabaseData() {
+      try {
+        const [loadedProducts, loadedOrders, loadedReviews] = await Promise.all([
+          maranaApi.getProducts(),
+          maranaApi.getOrders(),
+          maranaApi.getReviews(),
+        ]);
+        if (isMounted) {
+          if (loadedProducts && loadedProducts.length > 0) {
+            setProducts(loadedProducts);
+            setSelectedProduct((prev) => {
+              const stillExists = loadedProducts.find((p) => p.id === prev.id);
+              return stillExists || loadedProducts[0];
+            });
+          }
+          if (loadedOrders && loadedOrders.length > 0) {
+            setOrders(loadedOrders);
+          }
+          if (loadedReviews && loadedReviews.length > 0) {
+            setReviews(loadedReviews);
+          }
+        }
+      } catch (err) {
+        console.warn('Error inicializando datos desde XAMPP MySQL, usando datos locales:', err);
+      }
+    }
+    initDatabaseData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Cart Handlers
   const handleAddToCart = (product: Product, quantity = 1) => {
@@ -125,7 +161,7 @@ export default function App() {
   };
 
   // Order Placement
-  const handleOrderPlaced = (newOrder: Order) => {
+  const handleOrderPlaced = async (newOrder: Order) => {
     setOrders((prev) => [newOrder, ...prev]);
     setLastPlacedOrder(newOrder);
 
@@ -148,10 +184,13 @@ export default function App() {
     setCurrentView('order-success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     showToast('¡Pedido Registrado con Éxito!', `Código de orden: ${newOrder.id}`, 'success');
+
+    // Sincronizar en base de datos MySQL en XAMPP
+    await maranaApi.createOrder(newOrder);
   };
 
   // Backoffice Actions
-  const handleUpdateOrderStatus = (orderId: string, status: Order['status'], note?: string) => {
+  const handleUpdateOrderStatus = async (orderId: string, status: Order['status'], note?: string) => {
     setOrders((prev) =>
       prev.map((order) => {
         if (order.id === orderId) {
@@ -170,45 +209,53 @@ export default function App() {
         return order;
       })
     );
+
+    // Sincronizar en base de datos MySQL en XAMPP
+    await maranaApi.updateOrderStatus(orderId, status, note);
   };
 
-  const handleUpdateProductStock = (productId: string, newStock: number) => {
+  const handleUpdateProductStock = async (productId: string, newStock: number) => {
     setProducts((prev) =>
       prev.map((p) => (p.id === productId ? { ...p, stock: newStock } : p))
     );
+    await maranaApi.updateProductStock(productId, newStock);
   };
 
-  const handleUpdateProductPrice = (productId: string, newPrice: number) => {
+  const handleUpdateProductPrice = async (productId: string, newPrice: number) => {
     setProducts((prev) =>
       prev.map((p) => (p.id === productId ? { ...p, price: newPrice } : p))
     );
+    await maranaApi.updateProductPrice(productId, newPrice);
   };
 
-  const handleUpdateReviewStatus = (
+  const handleUpdateReviewStatus = async (
     reviewId: string,
     status: Review['status']
   ) => {
     setReviews((prev) =>
       prev.map((r) => (r.id === reviewId ? { ...r, status } : r))
     );
+    await maranaApi.updateReviewStatus(reviewId, status);
   };
 
-  const handleAddReviewResponse = (reviewId: string, responseText: string) => {
+  const handleAddReviewResponse = async (reviewId: string, responseText: string) => {
+    const reply = {
+      author: 'Taller Maraña Crochet',
+      role: 'Maestra Artesana',
+      date: 'Hoy',
+      text: responseText,
+    };
     setReviews((prev) =>
       prev.map((r) =>
         r.id === reviewId
           ? {
               ...r,
-              workshopReply: {
-                author: 'Taller Maraña Crochet',
-                role: 'Maestra Artesana',
-                date: 'Hoy',
-                text: responseText,
-              },
+              workshopReply: reply,
             }
           : r
       )
     );
+    await maranaApi.addReviewReply(reviewId, reply);
   };
 
   const cartTotalCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
