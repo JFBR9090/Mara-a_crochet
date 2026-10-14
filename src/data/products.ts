@@ -305,3 +305,4 @@ export const INITIAL_PRODUCTS: Product[] = [
 ];
 
 export const PRODUCTS = INITIAL_PRODUCTS;
+

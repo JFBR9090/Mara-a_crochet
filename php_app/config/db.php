@@ -1,24 +1,26 @@
 <?php
-// config/db.php - Configuración de conexión PDO y base de datos MySQL para Maraña Crochet
+declare(strict_types=1);
 
-$dbHost = '127.0.0.1';
-$dbPort = '3306';
-$dbUser = 'root';
-$dbPass = '';
-$dbName = 'marana_crochet';
+// config/db.php - Conexión centralizada con soporte para arquitectura moderna PHP 8.2+
+$autoloadPaths = [
+    __DIR__ . '/../../api/autoload.php',
+    __DIR__ . '/../api/autoload.php',
+    dirname(__DIR__) . '/vendor/autoload.php',
+    dirname(__DIR__, 2) . '/vendor/autoload.php',
+];
+
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        break;
+    }
+}
+
+use Marana\Database\Database;
 
 try {
-    $pdo = new PDO("mysql:host={$dbHost};port={$dbPort};charset=utf8mb4", $dbUser, $dbPass, [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES   => false,
-    ]);
-
-    // Asegurar selección de base de datos
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    $pdo->exec("USE `{$dbName}`");
-
-} catch (PDOException $e) {
+    $pdo = Database::getConnection();
+} catch (Throwable $e) {
     die("<div style='font-family: sans-serif; padding: 2rem; background: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px; max-width: 600px; margin: 3rem auto; color: #900;'>
         <h3 style='margin-top:0;'>Error de Conexión a la Base de Datos MySQL</h3>
         <p>No se pudo conectar al servidor MySQL en XAMPP.</p>

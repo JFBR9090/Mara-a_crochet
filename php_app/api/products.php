@@ -1,94 +1,87 @@
 <?php
-// api/products.php - Endpoint REST para productos
+declare(strict_types=1);
+
+// php_app/api/products.php - Endpoint REST para productos con arquitectura PHP 8.2+
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/../config/db.php';
 
-$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+use Marana\DTO\ProductDTO;
+use Marana\Enums\ProductStatus;
+use Marana\Http\Response;
+use Marana\Repositories\ProductRepository;
 
-function formatProductRow($row) {
-    if (!$row) return null;
-    $row['price'] = (int)$row['price'];
-    $row['originalPrice'] = $row['originalPrice'] !== null ? (int)$row['originalPrice'] : null;
-    $row['usdApprox'] = (float)$row['usdApprox'];
-    $row['rating'] = (float)$row['rating'];
-    $row['reviewCount'] = (int)$row['reviewCount'];
-    $row['stock'] = (int)$row['stock'];
-    $row['maxStock'] = (int)$row['maxStock'];
-    $row['reserved'] = (int)$row['reserved'];
-    $row['craftHours'] = (float)$row['craftHours'];
-    $row['preorderDays'] = $row['preorderDays'] !== null ? (int)$row['preorderDays'] : null;
-    $row['images'] = !empty($row['images']) ? json_decode($row['images'], true) : [];
-    return $row;
-}
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$repo = new ProductRepository($pdo);
 
 if ($method === 'GET') {
-    if (!empty($_GET['id'])) {
-        $stmt = $pdo->prepare("SELECT * FROM `products` WHERE `id` = :id LIMIT 1");
-        $stmt->execute([':id' => $_GET['id']]);
-        $prod = $stmt->fetch();
-        if ($prod) {
-            echo json_encode(['success' => true, 'product' => formatProductRow($prod)]);
+    $id = isset($_GET['id']) ? trim((string)$_GET['id']) : '';
+
+    if ($id !== '') {
+        $product = $repo->findById($id);
+        if ($product) {
+            Response::json(['success' => true, 'product' => $product->toArray()]);
         } else {
-            http_response_code(404);
-            echo json_encode(['success' => false, 'error' => 'Producto no encontrado']);
+            Response::error('Producto no encontrado', 404);
         }
     } else {
-        $stmt = $pdo->query("SELECT * FROM `products` ORDER BY `name` ASC");
-        $products = array_map('formatProductRow', $stmt->fetchAll());
-        echo json_encode(['success' => true, 'products' => $products]);
+        $products = $repo->findAll();
+        Response::json([
+            'success'  => true,
+            'products' => array_map(fn(ProductDTO $p) => $p->toArray(), $products)
+        ]);
     }
-    exit();
 }
 
 if ($method === 'PUT' || $method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-    if (!$input || empty($input['id'])) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'ID de producto requerido']);
-        exit();
+    if (!is_array($input) || empty($input['id'])) {
+        Response::error('ID de producto requerido', 400);
     }
 
-    $id = $input['id'];
+    $id = (string)$input['id'];
+    $existing = $repo->findById($id);
+    if (!$existing) {
+        Response::error('Producto no encontrado', 404);
+    }
+
     $fields = [];
     $params = [':id' => $id];
 
     if (isset($input['stock'])) {
-        $fields[] = "`stock` = :stock";
-        $params[':stock'] = (int)$input['stock'];
         $newStock = (int)$input['stock'];
-        if ($newStock <= 0) {
-            $fields[] = "`status` = 'soldout'";
-            $fields[] = "`statusLabel` = 'Agotado Temporalmente'";
-        } else if ($newStock <= 4) {
-            $fields[] = "`status` = 'low-stock'";
-            $fields[] = "`statusLabel` = '¡Últimas " . $newStock . " unidades!'";
-        } else {
-            $fields[] = "`status` = 'in-stock'";
-            $fields[] = "`statusLabel` = 'Stock Disponible (" . $newStock . ")'";
-        }
+        $fields[] = "`stock` = :stock";
+        $params[':stock'] = $newStock;
+
+        $statusEnum = ProductStatus::fromStock($newStock, $existing->preorderDays);
+        $fields[] = "`status` = :status";
+        $fields[] = "`statusLabel` = :statusLabel";
+        $params[':status'] = $statusEnum->value;
+        $params[':statusLabel'] = $statusEnum->label();
     }
 
     if (isset($input['price'])) {
+        $price = (int)$input['price'];
         $fields[] = "`price` = :price";
-        $params[':price'] = (int)$input['price'];
-        $fields[] = "`usdApprox` = :usdApprox";
-        $params[':usdApprox'] = round($input['price'] / 900, 2);
+        $params[':price'] = $price;
+        $fields[] = "`usdApprox` = :usd";
+        $params[':usd'] = round($price / 900, 2);
     }
 
-    if (!empty($fields)) {
-        $sql = "UPDATE `products` SET " . implode(', ', $fields) . " WHERE `id` = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
+    if (empty($fields)) {
+        Response::error('No se enviaron campos válidos para actualizar', 400);
     }
 
-    $resStmt = $pdo->prepare("SELECT * FROM `products` WHERE `id` = :id LIMIT 1");
-    $resStmt->execute([':id' => $id]);
-    $updated = $resStmt->fetch();
+    $sql = "UPDATE `products` SET " . implode(', ', $fields) . " WHERE `id` = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
 
-    echo json_encode([
+    $updated = $repo->findById($id);
+
+    Response::json([
         'success' => true,
-        'message' => 'Producto actualizado en MySQL',
-        'product' => formatProductRow($updated)
+        'message' => 'Producto actualizado correctamente (PHP 8.2+)',
+        'product' => $updated?->toArray(),
     ]);
-    exit();
 }
+
+Response::error("Método HTTP '{$method}' no permitido", 405);

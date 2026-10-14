@@ -114,6 +114,7 @@ require __DIR__ . '/../includes/header.php';
       <a href="<?= $baseUrl ?>/admin/orders.php" class="btn btn-outlined btn-sm">Pedidos y Pagos</a>
       <a href="<?= $baseUrl ?>/admin/inventory.php" class="btn btn-primary btn-sm">Inventario de Lanas</a>
       <a href="<?= $baseUrl ?>/admin/reviews.php" class="btn btn-outlined btn-sm">Moderación de Reseñas</a>
+      <a href="<?= $baseUrl ?>/admin/status.php" class="btn btn-outlined btn-sm" style="border-color: #9D4EDD; color: #7B2CBF;">⚡ Motor PHP 8.2+</a>
       <a href="<?= $baseUrl ?>/index.php" class="btn btn-inverted btn-sm">Ver Tienda &rarr;</a>
     </div>
   </div>

@@ -1,5 +1,11 @@
 <?php
-// includes/functions.php - Funciones utilitarias y manejo de estado de sesión
+declare(strict_types=1);
+
+// includes/functions.php - Funciones utilitarias y manejo de estado de sesión en PHP 8.2+
+$autoloadCandidate = __DIR__ . '/../../api/autoload.php';
+if (file_exists($autoloadCandidate)) {
+    require_once $autoloadCandidate;
+}
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

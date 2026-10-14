@@ -1,0 +1,21 @@
+{
+    "name": "marana-crochet/backend",
+    "description": "Backend de alto nivel en PHP 8.2+ para la tienda artesanal Maraña Crochet",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marana\\": "api/src/"
+        },
+        "files": [
+            "api/cors.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
