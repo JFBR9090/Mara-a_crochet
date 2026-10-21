@@ -221,6 +221,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </div>
             </div>
 
+            {/* Payment Method Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 py-1">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">💳 Wompi</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-800">⚡ PSE</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-pink-100 text-pink-800">📱 Nequi / Daviplata</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">💵 Contra Entrega</span>
+            </div>
+
             {/* Checkout Action Button */}
             <div className="space-y-2 pt-1">
               <button
@@ -228,14 +236,15 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 className="w-full py-3.5 px-6 rounded-full bg-primary-container hover:bg-brand-electric-violet active:scale-[0.98] text-on-primary flex flex-col items-center justify-center shadow-[0_4px_20px_-2px_rgba(123,44,191,0.35)] transition-all cursor-pointer group"
                 type="button"
               >
-                <span className="font-label-lg text-sm font-bold flex items-center gap-2">
-                  Proceder al Checkout / Transferencia{' '}
+                <span className="font-label-lg text-sm sm:text-base font-bold flex items-center gap-2">
+                  <span className="material-symbols-outlined text-lg">lock</span>
+                  Comprar Ahora (Finalizar Compra){' '}
                   <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">
                     arrow_forward
                   </span>
                 </span>
                 <span className="font-label-sm text-[11px] opacity-90">
-                  Paso 1 de 2: Datos y Comprobante
+                  Despacho seguro nacional desde Neiva, Huila
                 </span>
               </button>
               <button

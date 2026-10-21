@@ -338,6 +338,16 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
               🌿 Bosque Encantado (3)
             </button>
             <button
+              onClick={() => setSelectedCategory('kits')}
+              className={`shrink-0 px-5 py-2.5 rounded-full font-label-md text-sm font-bold transition-all cursor-pointer ${
+                selectedCategory === 'kits'
+                  ? 'bg-primary text-on-primary shadow-sm'
+                  : 'bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-badge-lavender-bg'
+              }`}
+            >
+              🧶 Kits &amp; Aprendizaje (3)
+            </button>
+            <button
               onClick={() => setSelectedCategory('bebes')}
               className={`shrink-0 px-5 py-2.5 rounded-full font-label-md text-sm font-bold transition-all cursor-pointer ${
                 selectedCategory === 'bebes'
@@ -345,7 +355,7 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                   : 'bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-badge-lavender-bg'
               }`}
             >
-              👶 Apego &amp; Ternura (3)
+              👶 Apego &amp; Ternura (2)
             </button>
             <button
               onClick={() => setSelectedCategory('nuevos')}
@@ -355,7 +365,7 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                   : 'bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-badge-lavender-bg'
               }`}
             >
-              ✨ Nuevas Creaciones (2)
+              ✨ Nuevas Creaciones (3)
             </button>
           </div>
 
@@ -451,44 +461,51 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                       <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-surface-container-low mb-4">
                         <img
                           alt={product.name}
-                          src={product.images[0]?.url}
+                          src={product.images[0]?.url || '/kit-crochet.jpg'}
                           onClick={() => onSelectProduct(product)}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/kit-crochet.jpg';
+                          }}
                           className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer ${
                             isSoldOut ? 'grayscale-[30%]' : ''
                           }`}
                         />
 
                         {/* Top Badges */}
-                        {product.status === 'low-stock' && (
+                        {product.discountBadge ? (
+                          <span className="absolute top-3 left-3 bg-amber-500 text-amber-950 px-3 py-1 rounded-full font-label-sm text-xs font-extrabold flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                            {product.discountBadge}
+                          </span>
+                        ) : product.status === 'low-stock' ? (
                           <span className="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm text-status-low-warning px-3 py-1 rounded-full font-label-sm text-xs font-bold flex items-center gap-1 shadow-sm">
                             <span className="w-1.5 h-1.5 rounded-full bg-status-low-warning animate-pulse"></span>
                             {product.statusLabel}
                           </span>
-                        )}
-                        {product.status === 'in-stock' && product.category === 'nuevos' && (
+                        ) : product.status === 'in-stock' && product.category === 'nuevos' ? (
                           <span className="absolute top-3 left-3 bg-secondary-fixed text-[#2e004d] px-3 py-1 rounded-full font-label-sm text-xs font-bold flex items-center gap-1 shadow-sm">
                             <span className="material-symbols-outlined text-xs">auto_awesome</span>
                             Nuevo Ingreso
                           </span>
-                        )}
-                        {product.status === 'in-stock' && product.category !== 'nuevos' && (
-                          <span className="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm text-status-stock-success px-3 py-1 rounded-full font-label-sm text-xs font-bold flex items-center gap-1 shadow-sm">
-                            <span className="w-1.5 h-1.5 rounded-full bg-status-stock-success"></span>
-                            {product.statusLabel}
-                          </span>
-                        )}
-                        {isPreorder && (
+                        ) : isPreorder ? (
                           <span className="absolute top-3 left-3 bg-badge-lavender-bg text-primary px-3 py-1 rounded-full font-label-sm text-xs font-bold flex items-center gap-1 shadow-sm">
                             <span className="material-symbols-outlined text-sm">yard</span>
                             En Aguja (7 días)
                           </span>
-                        )}
-                        {isSoldOut && (
+                        ) : isSoldOut ? (
                           <span className="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm text-status-out-error px-3 py-1 rounded-full font-label-sm text-xs font-bold flex items-center gap-1 shadow-sm">
                             <span className="w-1.5 h-1.5 rounded-full bg-status-out-error"></span>
-                            Agotado Temporalmente
+                            Agotado
                           </span>
-                        )}
+                        ) : null}
+
+                        {/* Vista Rápida Hover Button */}
+                        <button
+                          onClick={() => onSelectProduct(product)}
+                          className="absolute inset-x-0 bottom-3 mx-auto w-fit px-4 py-1.5 rounded-full bg-white/95 text-primary hover:bg-primary hover:text-white font-label-sm text-xs font-bold shadow-md opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1.5 cursor-pointer backdrop-blur-sm"
+                        >
+                          <span className="material-symbols-outlined text-sm">visibility</span>
+                          <span>Vista Rápida</span>
+                        </button>
 
                         {/* Favorite button */}
                         <button
@@ -508,7 +525,7 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                       {/* Details */}
                       <div className="space-y-1">
                         <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-xs">
-                          <span>{product.categoryLabel}</span>
+                          <span className="text-primary font-bold uppercase tracking-wider">{product.categoryLabel}</span>
                           <span className="flex items-center text-accent-star-gold font-bold">
                             ★ {product.rating} <span className="text-outline font-normal ml-0.5">({product.reviewCount})</span>
                           </span>
@@ -526,39 +543,36 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                     </div>
 
                     {/* Bottom Pricing & Action */}
-                    <div className="pt-4 mt-3 flex items-center justify-between border-t border-surface-container-high/60">
-                      <div>
+                    <div className="pt-3 mt-3 border-t border-surface-container-high/60 flex flex-col gap-2">
+                      <div className="flex items-baseline gap-2 flex-wrap">
                         <span className={`font-headline-sm text-lg font-extrabold ${isSoldOut ? 'text-outline' : 'text-primary'}`}>
-                          ${product.price.toLocaleString('es-CO')}
+                          ${product.price.toLocaleString('es-CO')} COP
                         </span>
-                        <span className="block font-label-sm text-[10px] text-on-surface-variant">COP</span>
+                        {product.originalPrice && (
+                          <span className="text-xs text-outline line-through">
+                            ${product.originalPrice.toLocaleString('es-CO')} COP
+                          </span>
+                        )}
+                        <span className="text-[11px] text-on-surface-variant font-medium ml-auto">
+                          ~USD ${product.usdApprox.toFixed(2)}
+                        </span>
                       </div>
 
-                      {isSoldOut ? (
-                        <button
-                          onClick={() => onShowToast(`Te avisaremos cuando ${product.name} vuelva al taller ✨`)}
-                          className="px-3.5 py-2 rounded-full bg-surface-container text-on-surface font-label-md text-xs font-bold hover:bg-badge-lavender-bg hover:text-primary transition-all flex items-center gap-1.5 cursor-pointer"
-                        >
-                          <span className="material-symbols-outlined text-sm">notifications</span>
-                          <span>Avisarme</span>
-                        </button>
-                      ) : isPreorder ? (
+                      <div className="flex items-center gap-2 w-full pt-1">
                         <button
                           onClick={() => onAddToCart(product)}
-                          className="px-4 py-2.5 rounded-full bg-surface-container-high text-primary font-label-md text-xs font-bold hover:bg-primary hover:text-on-primary transition-all flex items-center gap-1.5 cursor-pointer"
+                          disabled={isSoldOut}
+                          className="flex-1 py-2 px-3 rounded-xl bg-primary text-on-primary hover:bg-brand-vivid-purple disabled:opacity-50 font-label-sm text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1 cursor-pointer"
                         >
-                          <span>Reservar</span>
-                          <span className="material-symbols-outlined text-sm">schedule</span>
+                          Adoptar
                         </button>
-                      ) : (
                         <button
-                          onClick={() => onAddToCart(product)}
-                          className="p-3 rounded-full bg-primary-container text-on-primary hover:bg-brand-electric-violet hover:scale-105 active:scale-95 transition-all shadow-md flex items-center justify-center cursor-pointer"
-                          title="Agregar al Carrito"
+                          onClick={() => onSelectProduct(product)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-surface-container-lowest text-primary border border-primary/30 hover:bg-badge-lavender-bg font-label-sm text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
                         >
-                          <span className="material-symbols-outlined text-xl">add_shopping_cart</span>
+                          Detalle &amp; Reseñas
                         </button>
-                      )}
+                      </div>
                     </div>
                   </div>
                 );

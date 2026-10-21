@@ -105,7 +105,7 @@ require __DIR__ . '/includes/header.php';
     
     <!-- Columna Izquierda: Galería de Fotos -->
     <div>
-      <img id="main-product-photo" src="<?= h($mainImage) ?>" alt="<?= h($product['name']) ?>" class="gallery-main">
+      <img id="main-product-photo" src="<?= h($mainImage) ?>" alt="<?= h($product['name']) ?>" class="gallery-main" onerror="this.onerror=null; this.src='<?= $baseUrl ?>/assets/img/kit-crochet.jpg';">
       
       <?php if (count($images) > 1): ?>
         <div class="gallery-thumbs">

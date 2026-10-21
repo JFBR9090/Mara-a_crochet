@@ -158,3 +158,48 @@ function toggleFavorite(string $productId): bool {
     }
 }
 
+/**
+ * Gestión de Sesión de Clientes (Maraña Accounts)
+ */
+function isCustomerLoggedIn(): bool {
+    return isset($_SESSION['customer_id']) && !empty($_SESSION['customer_id']);
+}
+
+function getCustomer(): ?array {
+    if (!isCustomerLoggedIn()) {
+        return null;
+    }
+    return [
+        'id' => (int)$_SESSION['customer_id'],
+        'name' => $_SESSION['customer_name'] ?? '',
+        'email' => $_SESSION['customer_email'] ?? '',
+        'phone' => $_SESSION['customer_phone'] ?? '',
+        'address' => $_SESSION['customer_address'] ?? '',
+        'city' => $_SESSION['customer_city'] ?? '',
+        'department' => $_SESSION['customer_department'] ?? 'Cundinamarca',
+    ];
+}
+
+function loginCustomer(array $customer): void {
+    $_SESSION['customer_id'] = (int)$customer['id'];
+    $_SESSION['customer_name'] = $customer['name'];
+    $_SESSION['customer_email'] = $customer['email'];
+    $_SESSION['customer_phone'] = $customer['phone'] ?? '';
+    $_SESSION['customer_address'] = $customer['address'] ?? '';
+    $_SESSION['customer_city'] = $customer['city'] ?? '';
+    $_SESSION['customer_department'] = $customer['department'] ?? 'Cundinamarca';
+}
+
+function logoutCustomer(): void {
+    unset(
+        $_SESSION['customer_id'],
+        $_SESSION['customer_name'],
+        $_SESSION['customer_email'],
+        $_SESSION['customer_phone'],
+        $_SESSION['customer_address'],
+        $_SESSION['customer_city'],
+        $_SESSION['customer_department']
+    );
+}
+
+

@@ -60,22 +60,44 @@ $baseUrl = getBaseUrl();
     <?php endif; ?>
   </div>
 
-  <!-- Footer -->
-  <?php if (!empty($cartItems)): ?>
-    <div class="cart-drawer-footer">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-        <span style="font-size: 0.85rem; color: var(--color-neutral-medium);">Subtotal:</span>
-        <span id="cart-drawer-subtotal" style="font-size: 1.15rem; font-weight: 800; color: var(--color-neutral-dark);"><?= formatCOP($subtotal) ?></span>
+  <!-- Footer (siempre presente en DOM, visible cuando hay items) -->
+  <div class="cart-drawer-footer" id="cart-drawer-footer" style="display: <?= empty($cartItems) ? 'none' : 'block' ?>; padding: 1.25rem 1.5rem; background: #fff; border-top: 1px solid var(--color-neutral-border); box-shadow: 0 -4px 15px rgba(0,0,0,0.04);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+      <span style="font-size: 0.88rem; font-weight: 600; color: var(--color-neutral-medium);">Subtotal Amigurumis:</span>
+      <span id="cart-drawer-subtotal" style="font-size: 1.25rem; font-weight: 800; color: var(--color-neutral-dark);"><?= formatCOP($subtotal) ?></span>
+    </div>
+
+    <!-- Estimación de envío rápida -->
+    <div style="background: var(--color-neutral-bg); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); margin: 0.75rem 0; font-size: 0.78rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+        <span style="color: var(--color-neutral-medium);">🇨🇴 Despacho Nacional:</span>
+        <span style="font-weight: 700; color: var(--color-primary);">$11.500 - $14.500 COP</span>
       </div>
-      <p style="font-size: 0.72rem; color: var(--color-neutral-light); margin-bottom: 1rem;">
-        ✓ Incluye certificado de adopción y aroma de lavanda.<br>
-        Envío calculado en el paso siguiente.
-      </p>
-      <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
-        <a href="<?= $baseUrl ?>/checkout.php" class="btn btn-primary btn-lg" style="width: 100%;">Proceder al Checkout</a>
-        <a href="<?= $baseUrl ?>/cart.php" class="btn btn-outlined btn-sm" style="width: 100%;">Ver Canasta Detallada</a>
+      <div style="font-size: 0.73rem; color: var(--color-neutral-light);">
+        ✓ Empaque aromático de lavanda + Certificado incluido
       </div>
     </div>
-  <?php endif; ?>
+
+    <!-- Medios de Pago Aceptados -->
+    <div style="display: flex; justify-content: center; gap: 0.65rem; margin-bottom: 0.85rem; flex-wrap: wrap;">
+      <span style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; background: #f3e8ff; color: #6b21a8; border-radius: 4px;">💳 Wompi / Tarjetas</span>
+      <span style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; background: #e0f2fe; color: #0369a1; border-radius: 4px;">⚡ PSE</span>
+      <span style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; background: #fdf2f8; color: #be185d; border-radius: 4px;">📱 Nequi / Daviplata</span>
+      <span style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; background: #ecfdf5; color: #047857; border-radius: 4px;">💵 Contra Entrega</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <a href="<?= $baseUrl ?>/checkout.php" id="cart-drawer-checkout-btn" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; font-size: 1rem; padding: 0.85rem 1rem; box-shadow: 0 4px 14px rgba(123,44,191,0.35);">
+        <svg style="width: 1.15rem; height: 1.15rem; margin-right: 0.4rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        Comprar Ahora (Finalizar Compra) &rarr;
+      </a>
+      <a href="<?= $baseUrl ?>/cart.php" class="btn btn-outlined btn-sm" style="width: 100%; justify-content: center; font-weight: 600;">
+        Ver Canasta Detallada
+      </a>
+    </div>
+  </div>
 </aside>
 

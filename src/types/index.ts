@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   name: string;
   sku: string;
-  category: 'espacio' | 'bosque' | 'bebes' | 'nuevos';
+  category: 'espacio' | 'bosque' | 'bebes' | 'nuevos' | 'kits';
   categoryLabel: string;
   price: number; // in COP
   originalPrice?: number;

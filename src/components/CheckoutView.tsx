@@ -12,21 +12,21 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
   onBackToStore,
   onOrderPlaced,
 }) => {
-  // Contact & Shipping Form
-  const [email, setEmail] = useState('v.castro@correo.cl');
-  const [phone, setPhone] = useState('91234567');
+  // Contact & Shipping Form (Colombia)
+  const [email, setEmail] = useState('valentina.castro@gmail.com');
+  const [phone, setPhone] = useState('+57 312 456 7890');
   const [fullName, setFullName] = useState('Valentina Castro Pizarro');
-  const [rut, setRut] = useState('18.492.301-K');
-  const [region, setRegion] = useState('Región Metropolitana de Santiago');
-  const [comuna, setComuna] = useState('Providencia');
-  const [address, setAddress] = useState('Av. Manuel Montt 1420');
-  const [apartment, setApartment] = useState('Depto 402-B');
-  const [notes, setNotes] = useState('Dejar en conserjería si no respondo el timbre');
+  const [rut, setRut] = useState('1.075.289.412');
+  const [region, setRegion] = useState('Bogotá D.C.');
+  const [comuna, setComuna] = useState('Bogotá (Chapinero)');
+  const [address, setAddress] = useState('Carrera 15 # 85-30');
+  const [apartment, setApartment] = useState('Apto 402, Torre 1');
+  const [notes, setNotes] = useState('Dejar con vigilancia 24 horas si no respondo el timbre');
 
   // Gift Dedication
   const [isGift, setIsGift] = useState(true);
   const [giftDedication, setGiftDedication] = useState(
-    'Para mi sobrina regalona Sofía en su 5to cumpleaños. ¡Que la Arañita Cósmica cuide tus sueños y te inspire a explorar las estrellas! ✨ Con todo el amor de tu tía Valen.'
+    'Para mi sobrina regalona Sofía en su 5to cumpleaños. ¡Que la Arañita Cósmica cuide tus sueños y te inspire a explorar las estrellas! ✨ Con todo el amor de tu tía Valen desde Neiva.'
   );
 
   // Shipping Method

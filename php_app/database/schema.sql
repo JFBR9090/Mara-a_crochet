@@ -33,9 +33,23 @@ CREATE TABLE IF NOT EXISTS `products` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `phone` VARCHAR(50) NOT NULL,
+  `address` VARCHAR(255) NOT NULL,
+  `city` VARCHAR(100) NOT NULL,
+  `department` VARCHAR(100) NOT NULL DEFAULT 'Cundinamarca',
+  `password` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` VARCHAR(100) NOT NULL PRIMARY KEY,
   `date` VARCHAR(100) NOT NULL,
+  `customerId` INT NULL,
   `customerName` VARCHAR(255) NOT NULL,
   `customerEmail` VARCHAR(255) NOT NULL,
   `customerPhone` VARCHAR(100) NOT NULL,
@@ -47,12 +61,14 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `subtotal` INT NOT NULL,
   `total` INT NOT NULL,
   `status` VARCHAR(50) NOT NULL DEFAULT 'revision',
+  `paymentMethod` VARCHAR(100) NOT NULL DEFAULT 'transferencia',
   `bank` VARCHAR(100) NOT NULL DEFAULT 'Bancolombia',
   `accountType` VARCHAR(100) NOT NULL DEFAULT 'Cuenta de Ahorros',
   `transferDetails` LONGTEXT,
   `giftDedication` TEXT DEFAULT NULL,
   `auditLog` LONGTEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX (`customerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `reviews` (

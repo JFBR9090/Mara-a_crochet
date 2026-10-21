@@ -168,6 +168,9 @@ require __DIR__ . '/includes/header.php';
       <a href="<?= $baseUrl ?>/index.php#catalogo" class="cat-pill <?= ($categoryFilter === 'all' && !$onlyFavorites) ? 'active' : '' ?>">
         Todas las Criaturas (<?= $totalProductsCount ?>)
       </a>
+      <a href="<?= $baseUrl ?>/index.php?category=kits#catalogo" class="cat-pill <?= ($categoryFilter === 'kits') ? 'active' : '' ?>">
+        ✨ Kits & Aprendizaje (<?= $categoryCounts['kits'] ?? 0 ?>)
+      </a>
       <a href="<?= $baseUrl ?>/index.php?category=espacio#catalogo" class="cat-pill <?= ($categoryFilter === 'espacio') ? 'active' : '' ?>">
         Espacio & Estrellas (<?= $categoryCounts['espacio'] ?? 0 ?>)
       </a>
@@ -178,7 +181,7 @@ require __DIR__ . '/includes/header.php';
         Apego Bebés (<?= $categoryCounts['bebes'] ?? 0 ?>)
       </a>
       <a href="<?= $baseUrl ?>/index.php?category=nuevos#catalogo" class="cat-pill <?= ($categoryFilter === 'nuevos') ? 'active' : '' ?>">
-        Nuevas Creaciones & Kits (<?= $categoryCounts['nuevos'] ?? 0 ?>)
+        Nuevas Creaciones (<?= $categoryCounts['nuevos'] ?? 0 ?>)
       </a>
       <a href="<?= $baseUrl ?>/index.php?filter=favoritos#catalogo" class="cat-pill <?= $onlyFavorites ? 'active' : '' ?>">
         ❤️ Favoritos (<?= count($favorites) ?>)
@@ -275,7 +278,21 @@ require __DIR__ . '/includes/header.php';
             </button>
 
             <a href="<?= $baseUrl ?>/product.php?id=<?= h($prod['id']) ?>" tabindex="-1">
-              <img src="<?= h($thumbUrl) ?>" alt="<?= h($prod['name']) ?>" class="product-img" loading="lazy">
+              <?php if (!empty($thumbUrl)): ?>
+                <img 
+                  src="<?= h($thumbUrl) ?>" 
+                  alt="<?= h($prod['name']) ?>" 
+                  class="product-img" 
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='<?= $baseUrl ?>/assets/img/kit-crochet.jpg';"
+                >
+              <?php else: ?>
+                <div class="product-img-placeholder">
+                  <span class="placeholder-icon">📦</span>
+                  <span class="placeholder-badge">Kit Oficial Maraña</span>
+                  <span class="placeholder-text">Foto en Preparación</span>
+                </div>
+              <?php endif; ?>
             </a>
           </div>
 

@@ -301,6 +301,138 @@ export const INITIAL_PRODUCTS: Product[] = [
     filling: 'Vellón siliconado hipoalergénico',
     safety: 'Bordado total sin piezas sueltas',
     includes: 'Caja regalo + Tarjeta dedicatoria'
+  },
+  {
+    id: 'ranita-sabana',
+    name: 'Ranita de la Sabana Cósmica',
+    sku: 'MAR-RANA-014',
+    category: 'bosque',
+    categoryLabel: 'Bosque Encantado',
+    price: 21900,
+    originalPrice: 26000,
+    discountBadge: 'Popular',
+    usdApprox: 24.50,
+    rating: 4.9,
+    reviewCount: 29,
+    stock: 7,
+    maxStock: 12,
+    reserved: 1,
+    status: 'in-stock',
+    statusLabel: 'Stock Disponible (7)',
+    tagline: 'Inspirada en los humedales andinos · Ojos tiernos bordados',
+    description: 'Ranita verde esmeralda tejida con hilo 100% de algodón peinado con gorrito de hongo amatista desmontable. Ideal para acompañar escritorios y rincones de meditación.',
+    images: [
+      {
+        url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZ1Gae0ANE2yDSm_fl4UDG6A99dQ-FGtiZohNlj87AMAXTeZHkHkDz5ZnmXxv8Wb3g5bGCWHzkFPorhvHAzFBTDoJISBWXwYfWyAohWUu_QDo9iNwHzCBVHg6_Y6QEhFpn1WQNBXQiov-YKMAoGyOZSWFUhTXf3Ft7fku1gfLf12MvrtcX2oca68WcDhiwyvEFHWn-DsvBoRuUa7rw4s3rgXxQ2JwzzdH5xCOXwuAIju44V2HFo66K',
+        alt: 'Ranita de la Sabana Cósmica'
+      }
+    ],
+    craftHours: 4.2,
+    dimensions: '14 cm x 11 cm',
+    weight: '95 gramos',
+    material: '100% Algodón Peinado Colombiano',
+    filling: 'Vellón siliconado hipoalergénico',
+    safety: 'Ojos bordados con hilo satinado',
+    includes: 'Gorrito de hongo + Caja kraft con ramillete de lavanda'
+  },
+  {
+    id: 'kit-crochet-principiante',
+    name: 'Kit de Crochet Artesanal Maraña',
+    sku: 'MAR-KIT-001',
+    category: 'kits',
+    categoryLabel: 'KITS & APRENDIZAJE',
+    price: 34900,
+    originalPrice: 39900,
+    discountBadge: 'KIT COMPLETO',
+    usdApprox: 38.00,
+    rating: 5.0,
+    reviewCount: 48,
+    stock: 12,
+    maxStock: 20,
+    reserved: 1,
+    status: 'in-stock',
+    statusLabel: 'Stock Disponible (12)',
+    tagline: 'Aprende a tejer tu propia arañita cósmica paso a paso',
+    description: 'El kit oficial de iniciación de Maraña Crochet. Contiene 3 ovillos de algodón peinado hipoalergénico en tonos amatista y lavanda, ganchillo ergonómico de 2.5 mm, marcadores de puntada en bronce artesanal, vellón siliconado de alta densidad, aguja lanera y folleto de adopción con acceso a la videoguía exclusiva.',
+    images: [
+      {
+        url: '/kit-crochet.jpg',
+        alt: 'Kit de Crochet Artesanal Maraña'
+      }
+    ],
+    craftHours: 1.5,
+    dimensions: '22 cm x 18 cm x 8 cm (caja kraft)',
+    weight: '320 gramos',
+    material: '100% Algodón Peinado Colombiano + Aguja ergonómica',
+    filling: 'Vellón siliconado incluido para 1 amigurumi completo',
+    safety: 'Materiales seguros para mayores de 8 años',
+    includes: '3 Ovillos + Ganchillo 2.5mm + Marcadores + Certificado + Guía Paso a Paso'
+  },
+  {
+    id: 'kit-ranita-cosmica',
+    name: 'Kit Teje tu Ranita Cósmica',
+    sku: 'MAR-KIT-002',
+    category: 'kits',
+    categoryLabel: 'KITS & APRENDIZAJE',
+    price: 32900,
+    originalPrice: 36900,
+    discountBadge: 'EDICIÓN ESPECIAL',
+    usdApprox: 35.00,
+    rating: 4.9,
+    reviewCount: 31,
+    stock: 8,
+    maxStock: 15,
+    reserved: 0,
+    status: 'in-stock',
+    statusLabel: 'Stock Disponible (8)',
+    tagline: 'Todo lo necesario para tejer a la Ranita de la Sabana',
+    description: 'Incluye ovillos verde esmeralda y morado amatista, ojos de seguridad con traba reforzada, patrón ilustrado exclusivo con diagrama de puntos y ramillete aromático de lavanda.',
+    images: [
+      {
+        url: '/kit-crochet.jpg',
+        alt: 'Kit Teje tu Ranita Cósmica'
+      }
+    ],
+    craftHours: 2.0,
+    dimensions: '20 cm x 16 cm x 7 cm',
+    weight: '290 gramos',
+    material: 'Algodón peinado mercerizado',
+    filling: 'Vellón siliconado hipoalergénico',
+    safety: 'Ojos con traba de seguridad infantil',
+    includes: 'Hilados + Patrón exclusivo + Aguja ergonómica + Ojos de seguridad'
+  },
+  {
+    id: 'kit-mini-bosque',
+    name: 'Kit Mini Criaturas del Bosque',
+    sku: 'MAR-KIT-003',
+    category: 'kits',
+    categoryLabel: 'KITS & APRENDIZAJE',
+    price: 28900,
+    originalPrice: 33500,
+    discountBadge: 'PRINCIPIANTES',
+    usdApprox: 30.00,
+    rating: 4.8,
+    reviewCount: 22,
+    stock: 10,
+    maxStock: 15,
+    reserved: 0,
+    status: 'in-stock',
+    statusLabel: 'Stock Disponible (10)',
+    tagline: 'Pack de 3 honguitos y bellotas mágicas para iniciarse',
+    description: 'Ideal para quienes quieren empezar con proyectos rápidos y encantadores. Incluye mini ovillos de 5 tonalidades terrosas y pasteles, argollas para llavero y relleno.',
+    images: [
+      {
+        url: '/kit-crochet.jpg',
+        alt: 'Kit Mini Criaturas del Bosque'
+      }
+    ],
+    craftHours: 1.0,
+    dimensions: '18 cm x 14 cm x 6 cm',
+    weight: '220 gramos',
+    material: 'Algodón 100% natural',
+    filling: 'Vellón hipoalergénico',
+    safety: 'Bordado manual reforzado',
+    includes: '5 Mini ovillos + 3 Argollas llavero + Ganchillo + Guía'
   }
 ];
 
