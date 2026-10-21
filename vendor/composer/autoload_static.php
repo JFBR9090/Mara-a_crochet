@@ -6,10 +6,6 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit469f1e912fba539d8fdf33ae8d6936a7
 {
-    public static $files = array (
-        '087ad7f811aed5ef1887fbc59fad0ecb' => __DIR__ . '/../..' . '/api/cors.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'M' =>
         array (

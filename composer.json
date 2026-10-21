@@ -9,10 +9,7 @@
     "autoload": {
         "psr-4": {
             "Marana\\": "api/src/"
-        },
-        "files": [
-            "api/cors.php"
-        ]
+        }
     },
     "config": {
         "optimize-autoloader": true,
