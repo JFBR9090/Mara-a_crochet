@@ -4,11 +4,16 @@ declare(strict_types=1);
 // admin/status.php - Panel de Diagnóstico y Salud del Motor PHP 8.2+
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/admin_auth.php';
+
+// Exigir inicio de sesión
+requireAdminAuth();
 
 use Marana\Database\Database;
 use Marana\Support\Environment;
 
 $baseUrl = getBaseUrl();
+$adminUser = getAdminUser();
 $diagnostics = Environment::getDiagnostics();
 
 $dbConnected = true;
@@ -30,12 +35,20 @@ require __DIR__ . '/../includes/header.php';
       <p style="font-size: 0.85rem;">Verificación en tiempo real de tipos estrictos, Enums, DTOs y persistencia en MySQL.</p>
     </div>
 
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
       <a href="<?= $baseUrl ?>/admin/orders.php" class="btn btn-outlined btn-sm">Pedidos y Pagos</a>
       <a href="<?= $baseUrl ?>/admin/inventory.php" class="btn btn-outlined btn-sm">Inventario de Lanas</a>
       <a href="<?= $baseUrl ?>/admin/reviews.php" class="btn btn-outlined btn-sm">Moderación de Reseñas</a>
       <a href="<?= $baseUrl ?>/admin/status.php" class="btn btn-primary btn-sm">⚡ Motor PHP 8.2+</a>
-      <a href="<?= $baseUrl ?>/index.php" class="btn btn-inverted btn-sm">Ver Tienda &rarr;</a>
+      <a href="<?= $baseUrl ?>/index.php" class="btn btn-outlined btn-sm">Ver Tienda</a>
+
+      <!-- Usuario Logueado & Botón Cerrar Sesión -->
+      <div style="margin-left: 0.5rem; display: flex; align-items: center; gap: 0.5rem; background: var(--color-primary-bg); border: 1px solid var(--color-primary-border); padding: 0.35rem 0.65rem; border-radius: var(--radius-sm); font-size: 0.78rem;">
+        <span style="font-weight: 700; color: var(--color-primary);">👤 <?= h($adminUser['name'] ?? 'Admin') ?> (Neiva)</span>
+        <a href="<?= $baseUrl ?>/admin/logout.php" title="Cerrar Sesión" style="color: var(--color-danger); text-decoration: none; font-weight: 700; border-left: 1px solid var(--color-primary-border); padding-left: 0.5rem;">
+          Salir
+        </a>
+      </div>
     </div>
   </div>
 

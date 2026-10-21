@@ -39,6 +39,7 @@ Copy-Item -Path "dist\*" -Destination $Destination -Recurse -Force
 Copy-Item -Path "api\*" -Destination "$Destination\api" -Recurse -Force
 Copy-Item -Path "vendor\*" -Destination "$Destination\vendor" -Recurse -Force
 Copy-Item -Path "php_app\*" -Destination "$Destination\php_app" -Recurse -Force
+Copy-Item -Path "php_app\*" -Destination $Destination -Recurse -Force
 Copy-Item -Path "composer.json" -Destination $Destination -Force
 
 # 5. Crear .htaccess para soporte de rutas SPA y APIs

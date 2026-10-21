@@ -7,9 +7,13 @@ $currentScript = basename($_SERVER['SCRIPT_NAME']);
 $searchQuery = $_GET['q'] ?? '';
 ?>
 
+<?php
+require_once __DIR__ . '/admin_auth.php';
+$isAdmin = isAdminLoggedIn();
+?>
 <!-- Announcement Bar -->
 <aside class="announcement-bar">
-  <span>✨ Nueva tanda de Criaturas Cósmicas en aguja. Cada amigurumi incluye Certificado de Adopción numerado.</span>
+  <span>📍 Taller Artesanal en <strong>Neiva, Huila (Colombia)</strong> • 🇨🇴 Envíos únicamente a nivel nacional</span>
   <a href="<?= $baseUrl ?>/index.php#catalogo">Ver Catálogo &rarr;</a>
 </aside>
 

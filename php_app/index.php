@@ -78,14 +78,14 @@ require __DIR__ . '/includes/header.php';
     <div>
       <div class="hero-pill">
         <span class="hero-pill-dot"></span>
-        <span>Artesanía en Telar · Hecho a Mano en Chile</span>
+        <span>📍 Taller en Neiva, Huila · 🇨🇴 Solo Envíos Nacionales en Colombia</span>
       </div>
       <h1 class="hero-title">
         Criaturas tejidas con paciencia,<br>
         <span>ternura cósmica</span> y dedicación.
       </h1>
       <p class="hero-lead">
-        Cada amigurumi nace de hilados de algodón peinado hipoalergénico, aromatizado con flores de lavanda orgánica y acompañado de su Certificado de Adopción numerado.
+        Cada amigurumi nace en nuestro taller de Neiva, Huila, tejido a mano con hilados de algodón peinado hipoalergénico, aromatizado con flores de lavanda y despachado con Comprobante Oficial de Pago y Certificado de Adopción numerado.
       </p>
       <div class="hero-buttons">
         <a href="#catalogo" class="btn btn-primary btn-lg">Explorar Catálogo</a>

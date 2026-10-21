@@ -23,9 +23,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </span>
             </div>
             <p className="font-body-sm text-sm text-on-surface-variant leading-relaxed">
-              Creando seres mágicos tejidos a mano con hilos de algodón hipoalergénico y detalles cósmicos. Hecho punto por punto con paciencia y amor.
+              Creando seres mágicos tejidos a mano en nuestro taller artesanal en Neiva, Huila, Colombia con hilos de algodón hipoalergénico y detalles cósmicos. Hecho punto por punto con paciencia y amor.
             </p>
             <div className="flex items-center gap-2 pt-2">
+              <span className="material-symbols-outlined text-primary">location_on</span>
+              <span className="font-label-md text-sm text-primary font-bold">
+                Neiva, Huila · Colombia
+              </span>
+            </div>
+            <div className="flex items-center gap-2 pt-1">
               <span className="material-symbols-outlined text-status-stock-success">verified</span>
               <span className="font-label-md text-sm text-on-surface font-semibold">
                 Garantía 100% Hecho a Mano
@@ -60,19 +66,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Payments and Shipping column */}
           <div className="space-y-3">
             <h3 className="font-label-lg text-sm text-on-surface uppercase tracking-wider font-bold">
-              Pagos y Envíos
+              Pagos y Envíos Nacionales
             </h3>
             <p className="font-body-sm text-sm text-on-surface-variant leading-relaxed">
-              Aceptamos pagos directos por <strong className="text-primary font-semibold">Transferencia Bancaria</strong> (con validación de comprobante en línea), tarjetas y billeteras digitales.
+              🇨🇴 <strong className="text-primary font-semibold">Envíos únicamente a nivel nacional en Colombia</strong> despachados directamente desde Neiva, Huila. Pago seguro por Bancolombia, Nequi y Daviplata.
             </p>
             <div className="flex items-center gap-3 text-secondary pt-1">
-              <span className="material-symbols-outlined text-2xl" title="Transferencia Bancaria">account_balance</span>
-              <span className="material-symbols-outlined text-2xl" title="Comprobante en Línea">receipt_long</span>
-              <span className="material-symbols-outlined text-2xl" title="Envíos a todo Chile">local_shipping</span>
+              <span className="material-symbols-outlined text-2xl" title="Transferencia Bancolombia / Nequi / Daviplata">account_balance</span>
+              <span className="material-symbols-outlined text-2xl" title="Comprobante Oficial de Pago">receipt_long</span>
+              <span className="material-symbols-outlined text-2xl" title="Envíos a toda Colombia">local_shipping</span>
               <span className="material-symbols-outlined text-2xl" title="Pago Seguro">lock</span>
             </div>
             <p className="font-label-sm text-xs text-on-surface-variant">
-              Envíos protegidos a todo el país en cajas ecológicas decoradas.
+              Emisión de Comprobante Oficial de Pago con cada orden registrada.
             </p>
           </div>
 

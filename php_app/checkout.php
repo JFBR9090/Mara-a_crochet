@@ -29,20 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dept          = trim($_POST['dept'] ?? '');
     $instructions  = trim($_POST['instructions'] ?? '');
 
-    $shippingMethod = $_POST['shippingMethod'] ?? 'express-rm';
+    $shippingMethod = $_POST['shippingMethod'] ?? 'nacional-colombia';
     $shippingCost = 0;
-    if ($shippingMethod === 'express-rm') {
-        $shippingCost = 3990;
-    } elseif ($shippingMethod === 'regiones') {
-        $shippingCost = 5990;
+    if ($shippingMethod === 'nacional-colombia') {
+        $shippingCost = 14500;
+    } elseif ($shippingMethod === 'envio-neiva') {
+        $shippingCost = 6000;
     } elseif ($shippingMethod === 'retiro') {
         $shippingCost = 0;
     }
 
     $giftDedication = trim($_POST['giftDedication'] ?? '');
-    $bank           = $_POST['bank'] ?? 'Santander';
+    $bank           = $_POST['bank'] ?? 'Bancolombia';
     $tefFolio       = trim($_POST['tefFolio'] ?? '');
-    $accountType    = $_POST['accountType'] ?? 'Cuenta Corriente';
+    $accountType    = $_POST['accountType'] ?? 'Cuenta de Ahorros';
 
     if (empty($customerName) || empty($customerEmail) || empty($customerPhone) || empty($street)) {
         $error = 'Por favor completa todos los campos requeridos marcados con (*).';
@@ -224,18 +224,18 @@ require __DIR__ . '/includes/header.php';
           </div>
           <div class="form-group">
             <label class="form-label" for="cust-email">Correo Electrónico *</label>
-            <input type="email" id="cust-email" name="customerEmail" required class="form-control" placeholder="v.castro@correo.cl" value="v.castro@correo.cl">
+            <input type="email" id="cust-email" name="customerEmail" required class="form-control" placeholder="v.castro@correo.com" value="v.castro@correo.com">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
             <label class="form-label" for="cust-phone">Teléfono / WhatsApp *</label>
-            <input type="tel" id="cust-phone" name="customerPhone" required class="form-control" placeholder="+56 9 9123 4567" value="+56 9 9123 4567">
+            <input type="tel" id="cust-phone" name="customerPhone" required class="form-control" placeholder="+57 312 456 7890" value="+57 312 456 7890">
           </div>
           <div class="form-group">
-            <label class="form-label" for="cust-rut">RUT Cliente</label>
-            <input type="text" id="cust-rut" name="customerRut" class="form-control" placeholder="19.482.012-3" value="19.482.012-3">
+            <label class="form-label" for="cust-rut">Cédula de Ciudadanía (CC) / NIT *</label>
+            <input type="text" id="cust-rut" name="customerRut" required class="form-control" placeholder="Ej: 1.075.289.412" value="1.075.289.412">
           </div>
         </div>
       </div>
@@ -245,55 +245,68 @@ require __DIR__ . '/includes/header.php';
         <div class="card-header">
           <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
             <span style="width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
-            Dirección de Envío y Despacho
+            Dirección de Envío Nacional (Colombia)
           </h3>
+        </div>
+
+        <!-- Banner de Cobertura Nacional desde Neiva -->
+        <div style="background: var(--color-primary-bg); border-left: 3px solid var(--color-primary); padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.83rem; color: var(--color-neutral-dark);">
+          📍 <strong>Despachos desde Neiva, Huila:</strong> Realizamos envíos únicamente dentro del territorio nacional de Colombia con empaque especial y aroma a lavanda.
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label class="form-label" for="ship-region">Región *</label>
+            <label class="form-label" for="ship-region">Departamento (Colombia) *</label>
             <select name="region" id="ship-region" class="form-control">
-              <option value="Región Metropolitana de Santiago" selected>Región Metropolitana de Santiago</option>
-              <option value="Valparaíso">Región de Valparaíso</option>
-              <option value="Biobío">Región del Biobío</option>
-              <option value="Coquimbo">Región de Coquimbo</option>
-              <option value="Araucanía">Región de La Araucanía</option>
-              <option value="Otras Regiones">Otras Regiones de Chile</option>
+              <option value="Huila" selected>Huila (Sede Principal Taller)</option>
+              <option value="Bogotá D.C.">Bogotá D.C.</option>
+              <option value="Cundinamarca">Cundinamarca</option>
+              <option value="Antioquia">Antioquia</option>
+              <option value="Valle del Cauca">Valle del Cauca</option>
+              <option value="Tolima">Tolima</option>
+              <option value="Santander">Santander</option>
+              <option value="Boyacá">Boyacá</option>
+              <option value="Atlántico">Atlántico</option>
+              <option value="Bolívar">Bolívar</option>
+              <option value="Risaralda">Risaralda</option>
+              <option value="Caldas">Caldas</option>
+              <option value="Meta">Meta</option>
+              <option value="Otro Departamento">Otro Departamento Nacional</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="ship-comuna">Comuna / Ciudad *</label>
-            <input type="text" id="ship-comuna" name="comuna" required class="form-control" placeholder="Providencia" value="Providencia">
+            <label class="form-label" for="ship-comuna">Ciudad o Municipio *</label>
+            <input type="text" id="ship-comuna" name="comuna" required class="form-control" placeholder="Ej: Neiva, Pitalito, Garzón, Bogotá, etc." value="Neiva">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label class="form-label" for="ship-street">Calle y Número *</label>
-            <input type="text" id="ship-street" name="street" required class="form-control" placeholder="Av. Providencia 1240" value="Av. Providencia 1240">
+            <label class="form-label" for="ship-street">Dirección y Barrio (Calle / Carrera / Número) *</label>
+            <input type="text" id="ship-street" name="street" required class="form-control" placeholder="Ej: Carrera 5 # 12-45, Barrio Centro" value="Carrera 5 # 12-45, Barrio Centro">
           </div>
           <div class="form-group">
-            <label class="form-label" for="ship-dept">Depto / Block (Opcional)</label>
-            <input type="text" id="ship-dept" name="dept" class="form-control" placeholder="Dpto 802, Torre B" value="Dpto 802, Torre B">
+            <label class="form-label" for="ship-dept">Apto / Torre / Casa (Opcional)</label>
+            <input type="text" id="ship-dept" name="dept" class="form-control" placeholder="Apto 302, Torre 1" value="Apto 302, Torre 1">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="ship-method">Método de Envío *</label>
+          <label class="form-label" for="ship-method">Modalidad de Envío *</label>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;">
             <label style="border: 1px solid var(--color-primary); background: var(--color-primary-subtle); border-radius: var(--radius-sm); padding: 0.85rem; display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
-              <input type="radio" name="shippingMethod" value="express-rm" checked onchange="updateTotalWithShipping(3990)">
+              <input type="radio" name="shippingMethod" value="nacional-colombia" checked onchange="updateTotalWithShipping(14500)">
               <div>
-                <div style="font-weight: 700; font-size: 0.85rem;">Express Santiago RM ($3.990)</div>
-                <div style="font-size: 0.72rem; color: var(--color-neutral-medium);">Entrega en 24-48 hrs hábiles</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">Envío Nacional Colombia ($14.500)</div>
+                <div style="font-size: 0.72rem; color: var(--color-neutral-medium);">Interrapidísimo / Servientrega (2-4 días)</div>
               </div>
             </label>
 
             <label style="border: 1px solid var(--color-neutral-border); background: #FFFFFF; border-radius: var(--radius-sm); padding: 0.85rem; display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
-              <input type="radio" name="shippingMethod" value="regiones" onchange="updateTotalWithShipping(5990)">
+              <input type="radio" name="shippingMethod" value="envio-neiva" onchange="updateTotalWithShipping(6000)">
               <div>
-                <div style="font-weight: 700; font-size: 0.85rem;">Starken / Chilexpress ($5.990)</div>
-                <div style="font-size: 0.72rem; color: var(--color-neutral-medium);">A todas las regiones de Chile</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">Envío Local Neiva ($6.000)</div>
+                <div style="font-size: 0.72rem; color: var(--color-neutral-medium);">Mensajería urbana express el mismo día</div>
               </div>
             </label>
 
@@ -301,7 +314,7 @@ require __DIR__ . '/includes/header.php';
               <input type="radio" name="shippingMethod" value="retiro" onchange="updateTotalWithShipping(0)">
               <div>
                 <div style="font-weight: 700; font-size: 0.85rem;">Retiro en Taller (Gratis)</div>
-                <div style="font-size: 0.72rem; color: var(--color-neutral-medium);">Previa coordinación en Providencia</div>
+                <div style="font-size: 0.72rem; color: var(--color-neutral-medium);">Neiva, Huila (Coordinación previa)</div>
               </div>
             </label>
           </div>
@@ -321,41 +334,41 @@ require __DIR__ . '/includes/header.php';
         <div class="card-header">
           <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
             <span style="width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
-            Pago mediante Transferencia Bancaria (TEF)
+            Pago por Transferencia Bancaria / Nequi / Daviplata
           </h3>
         </div>
 
-        <!-- Datos Bancarios Oficiales de Maraña -->
+        <!-- Datos Bancarios Oficiales de Maraña en Colombia -->
         <div style="background-color: var(--color-neutral-bg); border: 1px solid var(--color-primary-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
           <div style="font-weight: 800; color: var(--color-primary); font-size: 0.92rem; margin-bottom: 0.6rem;">
-            🏦 Datos para Transferir desde tu Banco o App:
+            🏦 Cuentas Oficiales para Transferir (Colombia):
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; font-size: 0.85rem;">
-            <div><strong>Banco:</strong> Banco Santander Chile</div>
-            <div><strong>Tipo de Cuenta:</strong> Cuenta Corriente</div>
-            <div><strong>Número:</strong> 74-884920-1</div>
-            <div><strong>Titular:</strong> Maraña Crochet SpA</div>
-            <div><strong>RUT:</strong> 77.892.410-5</div>
-            <div><strong>Email:</strong> pagos@maranacrochet.cl</div>
+            <div><strong>Bancolombia (Ahorros):</strong> 824-000192-41</div>
+            <div><strong>Nequi:</strong> 312 456 7890</div>
+            <div><strong>Daviplata:</strong> 312 456 7890</div>
+            <div><strong>Davivienda (Ahorros):</strong> 488-291039-11</div>
+            <div><strong>Titular:</strong> Maraña Crochet Artesanal</div>
+            <div><strong>NIT:</strong> 901.542.883-1 (Neiva, Huila)</div>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label class="form-label" for="pay-bank">Banco de Origen *</label>
+            <label class="form-label" for="pay-bank">Entidad o Billetera de Origen *</label>
             <select name="bank" id="pay-bank" class="form-control">
-              <option value="Santander" selected>Banco Santander</option>
-              <option value="BancoEstado">BancoEstado / CuentaRUT</option>
-              <option value="BCI">Banco BCI / MACH</option>
-              <option value="Banco de Chile">Banco de Chile / Edwards</option>
-              <option value="Scotiabank">Scotiabank</option>
-              <option value="Itaú">Banco Itaú</option>
-              <option value="Otro">Otro Banco / Cooperativa</option>
+              <option value="Bancolombia" selected>Bancolombia</option>
+              <option value="Nequi">Nequi</option>
+              <option value="Daviplata">Daviplata</option>
+              <option value="Davivienda">Davivienda</option>
+              <option value="Banco de Bogotá">Banco de Bogotá</option>
+              <option value="BBVA Colombia">BBVA Colombia</option>
+              <option value="Otro Banco Colombiano">Otro Banco / Cooperativa</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="tef-folio">Folio / N° Comprobante TEF *</label>
+            <label class="form-label" for="tef-folio">Folio / Número de Aprobación *</label>
             <input type="text" id="tef-folio" name="tefFolio" required class="form-control" placeholder="Ej: 94827103" value="94827103">
           </div>
         </div>
@@ -373,25 +386,25 @@ require __DIR__ . '/includes/header.php';
         
         <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem;">
           <span>Subtotal amigurumis (<?= getCartCount() ?> piezas):</span>
-          <span style="font-weight: 700;"><?= formatCLP($subtotal) ?></span>
+          <span style="font-weight: 700;"><?= formatCLP($subtotal) ?> COP</span>
         </div>
 
         <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem;">
-          <span>Costo de despacho seleccionado:</span>
-          <span id="summary-shipping" style="font-weight: 700;"><?= formatCLP(3990) ?></span>
+          <span>Costo de envío nacional:</span>
+          <span id="summary-shipping" style="font-weight: 700;"><?= formatCLP(14500) ?> COP</span>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.25rem; border-top: 1px solid var(--color-neutral-border); padding-top: 1rem; margin-top: 1rem; margin-bottom: 1.5rem;">
           <span style="font-weight: 800;">Total a Transferir:</span>
-          <span id="summary-total" style="font-size: 1.75rem; font-weight: 800; color: var(--color-primary);"><?= formatCLP($subtotal + 3990) ?></span>
+          <span id="summary-total" style="font-size: 1.75rem; font-weight: 800; color: var(--color-primary);"><?= formatCLP($subtotal + 14500) ?> COP</span>
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 1.05rem;">
-          Confirmar y Registrar Pedido en el Taller &rarr;
+          Confirmar Compra y Generar Comprobante Oficial &rarr;
         </button>
 
         <p style="text-align: center; font-size: 0.75rem; color: var(--color-neutral-light); margin-top: 0.75rem;">
-          Al hacer clic, tu pedido se registrará inmediatamente en nuestra base de datos y se apartará el stock de tus criaturas.
+          Al hacer clic, tu pedido se registrará inmediatamente en el taller en Neiva, Huila y se emitirá tu comprobante de pago oficial descargable en PDF.
         </p>
       </div>
 
@@ -406,8 +419,8 @@ require __DIR__ . '/includes/header.php';
     const total = subtotal + cost;
     const shippingEl = document.getElementById('summary-shipping');
     const totalEl = document.getElementById('summary-total');
-    if (shippingEl) shippingEl.textContent = cost === 0 ? 'Gratis' : '$' + new Intl.NumberFormat('es-CL').format(cost);
-    if (totalEl) totalEl.textContent = '$' + new Intl.NumberFormat('es-CL').format(total);
+    if (shippingEl) shippingEl.textContent = cost === 0 ? 'Gratis' : '$' + new Intl.NumberFormat('es-CO').format(cost) + ' COP';
+    if (totalEl) totalEl.textContent = '$' + new Intl.NumberFormat('es-CO').format(total) + ' COP';
   }
 </script>
 

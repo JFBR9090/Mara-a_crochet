@@ -2,8 +2,13 @@
 // admin/inventory.php - Gestión de inventario de amigurumis y materias primas del taller
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/admin_auth.php';
+
+// Exigir inicio de sesión
+requireAdminAuth();
 
 $baseUrl = getBaseUrl();
+$adminUser = getAdminUser();
 
 // 1. Procesar Actualizaciones de Stock o Precio
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_product') {
@@ -110,12 +115,20 @@ require __DIR__ . '/../includes/header.php';
       <p style="font-size: 0.85rem;">Monitoreo de existencias en aguja, precios y materias primas del taller.</p>
     </div>
 
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
       <a href="<?= $baseUrl ?>/admin/orders.php" class="btn btn-outlined btn-sm">Pedidos y Pagos</a>
       <a href="<?= $baseUrl ?>/admin/inventory.php" class="btn btn-primary btn-sm">Inventario de Lanas</a>
       <a href="<?= $baseUrl ?>/admin/reviews.php" class="btn btn-outlined btn-sm">Moderación de Reseñas</a>
       <a href="<?= $baseUrl ?>/admin/status.php" class="btn btn-outlined btn-sm" style="border-color: #9D4EDD; color: #7B2CBF;">⚡ Motor PHP 8.2+</a>
-      <a href="<?= $baseUrl ?>/index.php" class="btn btn-inverted btn-sm">Ver Tienda &rarr;</a>
+      <a href="<?= $baseUrl ?>/index.php" class="btn btn-outlined btn-sm">Ver Tienda</a>
+
+      <!-- Usuario Logueado & Botón Cerrar Sesión -->
+      <div style="margin-left: 0.5rem; display: flex; align-items: center; gap: 0.5rem; background: var(--color-primary-bg); border: 1px solid var(--color-primary-border); padding: 0.35rem 0.65rem; border-radius: var(--radius-sm); font-size: 0.78rem;">
+        <span style="font-weight: 700; color: var(--color-primary);">👤 <?= h($adminUser['name'] ?? 'Admin') ?> (Neiva)</span>
+        <a href="<?= $baseUrl ?>/admin/logout.php" title="Cerrar Sesión" style="color: var(--color-danger); text-decoration: none; font-weight: 700; border-left: 1px solid var(--color-primary-border); padding-left: 0.5rem;">
+          Salir
+        </a>
+      </div>
     </div>
   </div>
 

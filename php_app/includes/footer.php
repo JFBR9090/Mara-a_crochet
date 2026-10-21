@@ -14,10 +14,13 @@ $baseUrl = getBaseUrl();
           <span style="font-size: 1.1rem; font-weight: 800; color: var(--color-neutral-dark);">Maraña Crochet</span>
         </div>
         <p style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;">
-          Amigurumis nacidos en telar artesanal chileno. Hilados 100% de algodón peinado hipoalergénico diseñados para coleccionistas y apego infantil seguro.
+          Amigurumis tejidos a mano en nuestro taller artesanal en Neiva, Huila, Colombia. Hilados 100% de algodón peinado hipoalergénico diseñados para coleccionistas y apego infantil seguro.
         </p>
-        <div style="font-size: 0.75rem; color: var(--color-neutral-light);">
-          📍 Taller Artesanal · Providencia, Santiago de Chile
+        <div style="font-size: 0.75rem; color: var(--color-primary); font-weight: 700;">
+          📍 Taller Artesanal · Neiva, Huila, Colombia
+        </div>
+        <div style="font-size: 0.73rem; color: var(--color-neutral-light); margin-top: 0.2rem;">
+          🇨🇴 Despachos exclusivamente a nivel nacional
         </div>
       </div>
 
@@ -36,9 +39,10 @@ $baseUrl = getBaseUrl();
       <div>
         <h4 class="footer-title">Garantía Artesanal</h4>
         <ul class="footer-links">
-          <li>✓ Despachos a todo Chile vía Starken & Express RM</li>
-          <li>✓ Pago seguro vía Transferencia Electrónica (TEF)</li>
-          <li>✓ Caja kraft de regalo con flores secas de lavanda</li>
+          <li>✓ <strong>Envíos únicamente nacionales</strong> en toda Colombia</li>
+          <li>✓ Despachos directos desde <strong>Neiva, Huila</strong></li>
+          <li>✓ Pago seguro vía Bancolombia, Nequi y Daviplata</li>
+          <li>✓ Emisión de <strong>Comprobante Oficial de Pago</strong></li>
           <li>✓ Certificado de nacimiento y adopción numerado</li>
         </ul>
       </div>
@@ -46,7 +50,7 @@ $baseUrl = getBaseUrl();
       <!-- Columna 4: Panel del Taller -->
       <div>
         <h4 class="footer-title">Administración</h4>
-        <p style="font-size: 0.82rem; margin-bottom: 0.75rem;">Acceso al panel interno de control de pedidos, inventario de lanas y moderación de opiniones.</p>
+        <p style="font-size: 0.82rem; margin-bottom: 0.75rem;">Acceso protegido al panel interno de control de pedidos, inventario y comprobantes bancarios.</p>
         <a href="<?= $baseUrl ?>/admin/orders.php" class="btn btn-inverted btn-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="7" height="7"></rect>
@@ -54,7 +58,7 @@ $baseUrl = getBaseUrl();
             <rect x="14" y="14" width="7" height="7"></rect>
             <rect x="3" y="14" width="7" height="7"></rect>
           </svg>
-          Panel del Taller
+          Panel del Taller (Admin)
         </a>
       </div>
     </div>

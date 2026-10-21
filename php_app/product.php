@@ -259,6 +259,15 @@ require __DIR__ . '/includes/header.php';
             <td><?= h($product['includes']) ?></td>
           </tr>
         </table>
+
+        <!-- Garantía de Origen y Envíos Nacionales -->
+        <div style="margin-top: 1.25rem; background: var(--color-primary-bg); border: 1px solid var(--color-primary-border); border-radius: var(--radius-sm); padding: 1rem; font-size: 0.83rem; color: var(--color-neutral-dark); display: flex; flex-direction: column; gap: 0.45rem;">
+          <div style="font-weight: 800; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
+            📍 Taller Artesanal en Neiva, Huila (Colombia)
+          </div>
+          <div>🇨🇴 <strong>Envíos Únicamente Nacionales:</strong> Despachos a todos los departamentos de Colombia con empaque especial y aroma a lavanda.</div>
+          <div>📄 <strong>Comprobante Oficial:</strong> Al comprar se emite automáticamente tu comprobante electrónico de pago con serie única y certificado de adopción numerado.</div>
+        </div>
       </div>
 
     </div>
