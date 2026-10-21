@@ -23,7 +23,7 @@ $isAdmin = isAdminLoggedIn();
     
     <!-- Logo & Brand -->
     <a href="<?= $baseUrl ?>/index.php" class="brand-link" title="Maraña Crochet Inicio">
-      <div class="brand-mark">M</div>
+      <img src="<?= $baseUrl ?>/assets/img/logo.png" alt="Logo Maraña Crochet" class="brand-logo-img" style="width: 3.2rem; height: 3.2rem; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--color-primary); box-shadow: 0 4px 12px rgba(123, 44, 191, 0.28);">
       <div class="brand-title">
         <span>Maraña</span>
         <span class="brand-subtitle">Crochet Artesanal</span>
@@ -89,3 +89,4 @@ $isAdmin = isAdminLoggedIn();
 
   </div>
 </header>
+

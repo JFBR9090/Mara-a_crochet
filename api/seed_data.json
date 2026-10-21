@@ -305,18 +305,18 @@
       "id": "#MC-2024-884",
       "date": "Hoy 14:15 hrs",
       "customerName": "Valentina Castro Pizarro",
-      "customerEmail": "v.castro@correo.cl",
-      "customerPhone": "+56 9 9123 4567",
-      "customerRut": "19.482.012-3",
+      "customerEmail": "valentina.castro@gmail.com",
+      "customerPhone": "+57 312 456 7890",
+      "customerRut": "1.075.289.412",
       "address": {
-        "region": "Región Metropolitana de Santiago",
-        "comuna": "Providencia",
-        "street": "Av. Providencia 1240",
-        "dept": "Dpto 802, Torre B",
-        "instructions": "Dejar con conserjería las 24 horas si no respondo"
+        "region": "Bogotá D.C.",
+        "comuna": "Bogotá (Chapinero)",
+        "street": "Carrera 15 # 85-30",
+        "dept": "Apto 402, Torre 1",
+        "instructions": "Dejar con vigilancia 24 horas si no respondo"
       },
-      "shippingMethod": "express-rm",
-      "shippingCost": 3990,
+      "shippingMethod": "nacional-colombia",
+      "shippingCost": 14500,
       "items": [
         {
           "productId": "lulu-aranita",
@@ -336,23 +336,23 @@
         }
       ],
       "subtotal": 46980,
-      "total": 50970,
+      "total": 61480,
       "status": "revision",
-      "bank": "Santander",
-      "accountType": "Santander Cuenta Vista",
+      "bank": "Bancolombia",
+      "accountType": "Cuenta de Ahorros Bancolombia",
       "transferDetails": {
         "folio": "94827103",
-        "tefCode": "TEF-94827103",
-        "transferredAmount": 50970,
-        "transferDate": "14/10/2024 14:12 hrs",
-        "channel": "App Santander Móvil",
+        "tefCode": "TRF-94827103",
+        "transferredAmount": 61480,
+        "transferDate": "14/10/2026 14:12 hrs",
+        "channel": "App Bancolombia / Nequi",
         "subject": "Pedido Maraña #MC-2024-884",
-        "voucherFilename": "comprobante_tef_94827103.pdf"
+        "voucherFilename": "comprobante_bancolombia_94827103.pdf"
       },
-      "giftDedication": "¡Feliz Cumpleaños pequeña Sophie! Que tu arañita cósmica cuide tus más dulces sueños siempre con amor. De tu tía Vale.",
+      "giftDedication": "¡Feliz Cumpleaños pequeña Sophie! Que tu arañita cósmica cuide tus más dulces sueños siempre con amor. De tu tía Vale desde Neiva.",
       "auditLog": [
-        { "time": "14:15", "note": "Pedido ingresado por checkout web con comprobante TEF adjunto", "type": "info" },
-        { "time": "14:18", "note": "Validando folio TEF #94827103 en cartola bancaria Santander", "type": "warning" }
+        { "time": "14:15", "note": "Pedido ingresado por checkout web con comprobante Bancolombia adjunto", "type": "info" },
+        { "time": "14:18", "note": "Validando folio de transferencia en App Bancolombia / Nequi", "type": "warning" }
       ]
     }
   ],
@@ -391,7 +391,7 @@
         "author": "Sofía Morales",
         "role": "Tallerista Principal",
         "date": "Hace 2 días",
-        "text": "¡Hola Matías! Nos alegra de corazón saber que a tu novia le encantó su nueva compañera mágica. Tejer cada alita lunar fue un placer enorme. ¡Muchas gracias por apoyar la artesanía chilena! 💜✨"
+        "text": "¡Hola Matías! Nos alegra de corazón saber que a tu novia le encantó su nueva compañera mágica. Tejer cada alita lunar fue un placer enorme. ¡Muchas gracias por apoyar el talento y la artesanía colombiana! 💜✨"
       },
       "helpfulCount": 24
     },
@@ -406,7 +406,7 @@
       "productIcon": "dark_mode",
       "rating": 4,
       "date": "Hace 1 día",
-      "comment": "El amigurumi es bellísimo y los tonos lavanda son idénticos a las fotos. Solo pongo 4 estrellas porque el despacho de Starken demoró un día más de lo estimado, pero la atención de Sofía por WhatsApp fue súper cordial y atenta.",
+      "comment": "El amigurumi es bellísimo y los tonos lavanda son idénticos a las fotos. Solo pongo 4 estrellas porque la transportadora nacional demoró un día más de lo estimado, pero la atención de Sofía por WhatsApp fue súper cordial y atenta.",
       "verified": true,
       "status": "pending",
       "helpfulCount": 8

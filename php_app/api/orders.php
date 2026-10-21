@@ -62,14 +62,14 @@ if ($method === 'POST') {
             ':customerPhone' => $input['customerPhone'],
             ':customerRut' => $input['customerRut'],
             ':address' => json_encode($input['address'] ?? [], JSON_UNESCAPED_UNICODE),
-            ':shippingMethod' => $input['shippingMethod'] ?? 'express-rm',
+            ':shippingMethod' => $input['shippingMethod'] ?? 'nacional-colombia',
             ':shippingCost' => (int)($input['shippingCost'] ?? 0),
             ':items' => json_encode($input['items'] ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             ':subtotal' => (int)($input['subtotal'] ?? 0),
             ':total' => (int)($input['total'] ?? 0),
             ':status' => $input['status'] ?? 'revision',
-            ':bank' => $input['bank'] ?? 'Santander',
-            ':accountType' => $input['accountType'] ?? 'Cuenta Corriente',
+            ':bank' => $input['bank'] ?? 'Bancolombia',
+            ':accountType' => $input['accountType'] ?? 'Cuenta de Ahorros',
             ':transferDetails' => json_encode($input['transferDetails'] ?? [], JSON_UNESCAPED_UNICODE),
             ':giftDedication' => $input['giftDedication'] ?? null,
             ':auditLog' => json_encode($input['auditLog'] ?? [
@@ -189,3 +189,4 @@ if ($method === 'PUT' || $method === 'PATCH') {
     ]);
     exit();
 }
+

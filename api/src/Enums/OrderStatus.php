@@ -10,7 +10,7 @@ enum OrderStatus: string {
     case Pending       = 'pending';         // Esperando comprobante de transferencia
     case Verified      = 'verified';        // Transferencia validada por el taller
     case InProduction  = 'in_production';   // Amigurumi en tejido o preparación
-    case Shipped       = 'shipped';         // Enviado por Starken/Chilexpress
+    case Shipped       = 'shipped';         // Enviado por Inter Rapidísimo / Servientrega / Coordinadora
     case Delivered     = 'delivered';       // Entregado al cliente
     case Cancelled     = 'cancelled';       // Anulado
 

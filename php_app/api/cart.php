@@ -92,3 +92,4 @@ echo json_encode([
     'items' => getCart(),
     'favorites' => getFavorites(),
 ]);
+

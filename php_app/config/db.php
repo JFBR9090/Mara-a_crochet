@@ -28,3 +28,4 @@ try {
         <p style='font-size: 0.9em; color: #666;'>Por favor verifica que el servicio <strong>MySQL</strong> esté activo en el Panel de Control de XAMPP.</p>
     </div>");
 }
+

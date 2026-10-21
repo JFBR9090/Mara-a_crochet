@@ -4,7 +4,7 @@ export interface Product {
   sku: string;
   category: 'espacio' | 'bosque' | 'bebes' | 'nuevos';
   categoryLabel: string;
-  price: number; // in CLP
+  price: number; // in COP
   originalPrice?: number;
   discountBadge?: string;
   usdApprox: number;
@@ -63,7 +63,7 @@ export interface Order {
   subtotal: number;
   total: number;
   status: 'revision' | 'pendiente' | 'taller' | 'despachado' | 'entregado' | 'rechazado';
-  bank: 'Santander' | 'BancoEstado' | 'BCI' | 'Banco de Chile' | 'Otro';
+  bank: 'Bancolombia' | 'Nequi' | 'Daviplata' | 'Davivienda' | 'Banco de Bogotá' | 'Otro';
   accountType: string;
   transferDetails: {
     folio: string;
@@ -111,3 +111,4 @@ export interface Review {
   rejectionReason?: string;
   helpfulCount?: number;
 }
+

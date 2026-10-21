@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $parts = explode(' ', $reviewerName);
         $initials = strtoupper(substr($parts[0] ?? 'M', 0, 1) . substr($parts[1] ?? 'C', 0, 1));
         $emailParts = explode('@', $reviewerEmail);
-        $emailMasked = substr($emailParts[0] ?? 'usr', 0, 2) . '****@' . ($emailParts[1] ?? 'correo.cl');
+        $emailMasked = substr($emailParts[0] ?? 'usr', 0, 2) . '****@' . ($emailParts[1] ?? 'gmail.com');
 
         $revStmt = $pdo->prepare("
             INSERT INTO `reviews`
@@ -126,7 +126,7 @@ require __DIR__ . '/includes/header.php';
           Empaque & Caligrafía Artesanal
         </h4>
         <p style="font-size: 0.82rem; color: var(--color-neutral-medium); line-height: 1.45;">
-          Cada amigurumi viaja en una caja kraft ecológica con ramilletes de lavanda seca cultivada en el valle central de Chile. Incluye certificado de adopción numerado con caligrafía personalizada.
+          Cada amigurumi viaja en una caja kraft ecológica con ramilletes de lavanda aromática preparados en nuestro taller de Neiva, Huila (Colombia). Incluye certificado de adopción numerado con caligrafía personalizada y comprobante oficial de pago.
         </p>
       </div>
     </div>
@@ -156,11 +156,11 @@ require __DIR__ . '/includes/header.php';
       <div style="background: #FFFFFF; border: 1px solid var(--color-neutral-border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
         <div style="display: flex; align-items: baseline; gap: 0.85rem; margin-bottom: 0.5rem;">
           <span style="font-size: 2rem; font-weight: 800; color: var(--color-neutral-dark);">
-            <?= formatCLP($product['price']) ?>
+            <?= formatCOP($product['price']) ?>
           </span>
           <?php if (!empty($product['originalPrice'])): ?>
             <span style="font-size: 1.1rem; text-decoration: line-through; color: var(--color-neutral-light);">
-              <?= formatCLP($product['originalPrice']) ?>
+              <?= formatCOP($product['originalPrice']) ?>
             </span>
             <span style="background: var(--color-accent); color: var(--color-neutral-dark); font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm);">
               <?= h($product['discountBadge'] ?? 'OFERTA') ?>
@@ -344,7 +344,7 @@ require __DIR__ . '/includes/header.php';
           </div>
           <div class="form-group">
             <label class="form-label" for="rev-email">Tu Correo Electrónico *</label>
-            <input type="email" id="rev-email" name="customerEmail" required class="form-control" placeholder="nombre@correo.cl">
+            <input type="email" id="rev-email" name="customerEmail" required class="form-control" placeholder="nombre@gmail.com">
           </div>
         </div>
 
@@ -389,7 +389,7 @@ require __DIR__ . '/includes/header.php';
                 <a href="<?= $baseUrl ?>/product.php?id=<?= h($rel['id']) ?>"><?= h($rel['name']) ?></a>
               </h4>
               <div class="product-pricing">
-                <span class="current-price"><?= formatCLP($rel['price']) ?></span>
+                <span class="current-price"><?= formatCOP($rel['price']) ?></span>
               </div>
               <div class="product-actions">
                 <button type="button" class="btn btn-primary btn-sm" onclick="addToCartAjax('<?= h($rel['id']) ?>', 1)">Adoptar</button>
@@ -405,3 +405,4 @@ require __DIR__ . '/includes/header.php';
 </div>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
+

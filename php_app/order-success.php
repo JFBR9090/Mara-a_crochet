@@ -83,7 +83,7 @@ require __DIR__ . '/includes/header.php';
               </div>
             </div>
             <div style="font-weight: 700; font-size: 0.92rem;">
-              <?= formatCLP($item['price'] * $item['quantity']) ?>
+              <?= formatCOP($item['price'] * $item['quantity']) ?>
             </div>
           </div>
         <?php endforeach; ?>
@@ -92,15 +92,15 @@ require __DIR__ . '/includes/header.php';
       <div style="border-top: 1px solid var(--color-neutral-border-light); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.85rem;">
         <div style="display: flex; justify-content: space-between;">
           <span class="text-muted">Subtotal:</span>
-          <span style="font-weight: 600;"><?= formatCLP($order['subtotal']) ?></span>
+          <span style="font-weight: 600;"><?= formatCOP($order['subtotal']) ?></span>
         </div>
         <div style="display: flex; justify-content: space-between;">
           <span class="text-muted">Costo de Envío (<?= h($order['shippingMethod']) ?>):</span>
-          <span style="font-weight: 600;"><?= formatCLP($order['shippingCost']) ?></span>
+          <span style="font-weight: 600;"><?= formatCOP($order['shippingCost']) ?></span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 800; color: var(--color-primary); border-top: 1px solid var(--color-neutral-border); padding-top: 0.5rem; margin-top: 0.3rem;">
           <span>Total Transferido:</span>
-          <span><?= formatCLP($order['total']) ?></span>
+          <span><?= formatCOP($order['total']) ?></span>
         </div>
       </div>
     </div>
@@ -164,3 +164,4 @@ require __DIR__ . '/includes/header.php';
 </div>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
+

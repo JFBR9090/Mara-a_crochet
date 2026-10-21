@@ -54,7 +54,7 @@ export const INITIAL_REVIEWS: Review[] = [
       author: 'Sofía Morales',
       role: 'Tallerista Principal',
       date: 'Hace 2 días',
-      text: '¡Hola Matías! Nos alegra de corazón saber que a tu novia le encantó su nueva compañera mágica. Tejer cada alita lunar fue un placer enorme. ¡Muchas gracias por apoyar la artesanía chilena! 💜✨'
+      text: '¡Hola Matías! Nos alegra de corazón saber que a tu novia le encantó su nueva compañera mágica. Tejer cada alita lunar fue un placer enorme. ¡Muchas gracias por apoyar el talento y la artesanía colombiana! 💜✨'
     },
     helpfulCount: 24
   },
@@ -107,3 +107,4 @@ export const INITIAL_REVIEWS: Review[] = [
     rejectionReason: 'Regla TRD #REV-01 Aplicada: Solamente clientes Keycloak con estado de despacho "Entregado" pueden dejar reseñas de productos.'
   }
 ];
+

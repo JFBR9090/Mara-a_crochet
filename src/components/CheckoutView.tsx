@@ -30,10 +30,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
   );
 
   // Shipping Method
-  const [shippingMethod, setShippingMethod] = useState<'chilexpress' | 'starken' | 'bluexpress'>('chilexpress');
+  const [shippingMethod, setShippingMethod] = useState<'nacional' | 'neiva' | 'retiro'>('nacional');
 
   // Bank Selected for Transfer
-  const [selectedBank, setSelectedBank] = useState<'santander' | 'bancoestado' | 'bancochile'>('santander');
+  const [selectedBank, setSelectedBank] = useState<'bancolombia' | 'nequi' | 'daviplata'>('bancolombia');
 
   // Receipt upload & TEF info
   const [receiptImage, setReceiptImage] = useState<string | null>(
@@ -48,7 +48,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
 
   // Totals calculation
   const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-  const shippingCost = shippingMethod === 'chilexpress' ? 4500 : shippingMethod === 'starken' ? 3800 : 3500;
+  const shippingCost = shippingMethod === 'nacional' ? 14500 : shippingMethod === 'neiva' ? 6000 : 0;
   const discountAmount = Math.round(subtotal * (discountPercent / 100));
   const total = subtotal - discountAmount + shippingCost;
 
@@ -103,7 +103,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
           dept: apartment,
           instructions: notes,
         },
-        shippingMethod: shippingMethod === 'chilexpress' ? 'express-rm' : 'regiones',
+        shippingMethod: shippingMethod === 'nacional' ? 'nacional-colombia' : shippingMethod === 'neiva' ? 'envio-neiva' : 'retiro',
         shippingCost: shippingCost,
         items: cartItems.map((item) => ({
           productId: item.product.id,
@@ -116,8 +116,8 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
         subtotal: subtotal,
         total: total,
         status: 'revision',
-        bank: selectedBank === 'santander' ? 'Santander' : selectedBank === 'bancoestado' ? 'BancoEstado' : 'Banco de Chile',
-        accountType: selectedBank === 'bancoestado' ? 'Cuenta RUT' : 'Cuenta Corriente',
+        bank: selectedBank === 'bancolombia' ? 'Bancolombia' : selectedBank === 'nequi' ? 'Nequi' : 'Daviplata',
+        accountType: selectedBank === 'bancolombia' ? 'Cuenta de Ahorros' : selectedBank === 'nequi' ? 'Nequi' : 'Daviplata',
         transferDetails: {
           folio: tefCode.replace(/[^0-9]/g, '') || '94827103',
           tefCode: tefCode || 'TEF-884920',
@@ -231,21 +231,21 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="tu@correo.cl"
+                      placeholder="tu@correo.com"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#6100a4] focus:ring-2 focus:ring-[#f1dbff] outline-none text-sm transition-all"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      RUT chileno *
+                      Cédula de Ciudadanía (CC) / NIT *
                     </label>
                     <input
                       type="text"
                       required
                       value={rut}
                       onChange={(e) => setRut(e.target.value)}
-                      placeholder="18.492.301-K"
+                      placeholder="1.075.289.412"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#6100a4] focus:ring-2 focus:ring-[#f1dbff] outline-none text-sm transition-all"
                     />
                   </div>
@@ -256,14 +256,14 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                     </label>
                     <div className="flex">
                       <span className="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm font-semibold">
-                        🇨🇱 +56
+                        🇨🇴 +57
                       </span>
                       <input
                         type="tel"
                         required
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        placeholder="9 1234 5678"
+                        placeholder="312 456 7890"
                         className="w-full px-4 py-3 rounded-r-xl border border-gray-200 focus:border-[#6100a4] focus:ring-2 focus:ring-[#f1dbff] outline-none text-sm transition-all"
                       />
                     </div>
@@ -278,42 +278,46 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                     <span className="material-symbols-outlined text-xl">local_shipping</span>
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-[#1d1a20]">2. Dirección de Entrega en Chile</h2>
-                    <p className="text-xs text-gray-500">Despachos rápidos y asegurados con empaque aromático</p>
+                    <h2 className="text-lg font-bold text-[#1d1a20]">2. Dirección de Entrega en Colombia</h2>
+                    <p className="text-xs text-gray-500">Despachos nacionales desde nuestro taller en Neiva, Huila</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="sm:col-span-2">
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Región *
+                      Departamento *
                     </label>
                     <select
                       value={region}
                       onChange={(e) => setRegion(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#6100a4] focus:ring-2 focus:ring-[#f1dbff] outline-none text-sm transition-all bg-white"
                     >
-                      <option value="Región Metropolitana de Santiago">Región Metropolitana de Santiago</option>
-                      <option value="Región de Valparaíso">Región de Valparaíso (V)</option>
-                      <option value="Región del Biobío">Región del Biobío (VIII)</option>
-                      <option value="Región de Coquimbo">Región de Coquimbo (IV)</option>
-                      <option value="Región de O'Higgins">Región de O'Higgins (VI)</option>
-                      <option value="Región de Antofagasta">Región de Antofagasta (II)</option>
-                      <option value="Región de Los Lagos">Región de Los Lagos (X)</option>
-                      <option value="Otras Regiones de Chile">Otras Regiones de Chile (Envío Starken / Chilexpress)</option>
+                      <option value="Huila (Taller)">Huila (Sede Taller)</option>
+                      <option value="Bogotá D.C.">Bogotá D.C.</option>
+                      <option value="Antioquia">Antioquia</option>
+                      <option value="Valle del Cauca">Valle del Cauca</option>
+                      <option value="Cundinamarca">Cundinamarca</option>
+                      <option value="Santander">Santander</option>
+                      <option value="Atlántico">Atlántico</option>
+                      <option value="Bolívar">Bolívar</option>
+                      <option value="Tolima">Tolima</option>
+                      <option value="Risaralda">Risaralda</option>
+                      <option value="Caldas">Caldas</option>
+                      <option value="Otro Departamento">Otro Departamento de Colombia</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Comuna *
+                      Ciudad o Municipio *
                     </label>
                     <input
                       type="text"
                       required
                       value={comuna}
                       onChange={(e) => setComuna(e.target.value)}
-                      placeholder="Ej. Providencia, Ñuñoa, Las Condes..."
+                      placeholder="Ej. Neiva, Bogotá, Medellín, Cali..."
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#6100a4] focus:ring-2 focus:ring-[#f1dbff] outline-none text-sm transition-all"
                     />
                   </div>
@@ -362,24 +366,24 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                 {/* Shipping Carrier Selector */}
                 <div className="mt-6 pt-5 border-t border-gray-100">
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-3">
-                    Selecciona Courier de Envío
+                    Selecciona Modalidad de Envío
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button
                       type="button"
-                      onClick={() => setShippingMethod('chilexpress')}
+                      onClick={() => setShippingMethod('nacional')}
                       className={`text-left p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative ${
-                        shippingMethod === 'chilexpress'
+                        shippingMethod === 'nacional'
                           ? 'border-[#6100a4] bg-[#fbf5ff] shadow-sm'
                           : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-bold text-sm text-[#1d1a20]">Chilexpress</span>
-                        <span className="text-xs font-extrabold text-[#6100a4]">$4.500</span>
+                        <span className="font-bold text-sm text-[#1d1a20]">Envío Nacional</span>
+                        <span className="text-xs font-extrabold text-[#6100a4]">$14.500 COP</span>
                       </div>
-                      <p className="text-[11px] text-gray-500 leading-tight">Prioritario Express (24-48 hrs)</p>
-                      {shippingMethod === 'chilexpress' && (
+                      <p className="text-[11px] text-gray-500 leading-tight">Inter Rapidísimo / Servientrega (2-4 días)</p>
+                      {shippingMethod === 'nacional' && (
                         <span className="absolute top-2 right-2 material-symbols-outlined text-[#6100a4] text-base">
                           check_circle
                         </span>
@@ -388,19 +392,19 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
 
                     <button
                       type="button"
-                      onClick={() => setShippingMethod('starken')}
+                      onClick={() => setShippingMethod('neiva')}
                       className={`text-left p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative ${
-                        shippingMethod === 'starken'
+                        shippingMethod === 'neiva'
                           ? 'border-[#6100a4] bg-[#fbf5ff] shadow-sm'
                           : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-bold text-sm text-[#1d1a20]">Starken</span>
-                        <span className="text-xs font-extrabold text-[#6100a4]">$3.800</span>
+                        <span className="font-bold text-sm text-[#1d1a20]">Local Neiva</span>
+                        <span className="text-xs font-extrabold text-[#6100a4]">$6.000 COP</span>
                       </div>
-                      <p className="text-[11px] text-gray-500 leading-tight">A domicilio o agencia (2-3 días)</p>
-                      {shippingMethod === 'starken' && (
+                      <p className="text-[11px] text-gray-500 leading-tight">Mensajería urbana express el mismo día</p>
+                      {shippingMethod === 'neiva' && (
                         <span className="absolute top-2 right-2 material-symbols-outlined text-[#6100a4] text-base">
                           check_circle
                         </span>
@@ -409,19 +413,19 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
 
                     <button
                       type="button"
-                      onClick={() => setShippingMethod('bluexpress')}
+                      onClick={() => setShippingMethod('retiro')}
                       className={`text-left p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative ${
-                        shippingMethod === 'bluexpress'
+                        shippingMethod === 'retiro'
                           ? 'border-[#6100a4] bg-[#fbf5ff] shadow-sm'
                           : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-bold text-sm text-[#1d1a20]">Blue Express</span>
-                        <span className="text-xs font-extrabold text-[#6100a4]">$3.500</span>
+                        <span className="font-bold text-sm text-[#1d1a20]">Retiro en Taller</span>
+                        <span className="text-xs font-extrabold text-[#6100a4]">Gratis</span>
                       </div>
-                      <p className="text-[11px] text-gray-500 leading-tight">Económico estándar (2-4 días)</p>
-                      {shippingMethod === 'bluexpress' && (
+                      <p className="text-[11px] text-gray-500 leading-tight">Neiva, Huila (Coordinación previa)</p>
+                      {shippingMethod === 'retiro' && (
                         <span className="absolute top-2 right-2 material-symbols-outlined text-[#6100a4] text-base">
                           check_circle
                         </span>
@@ -490,36 +494,36 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                 <div className="grid grid-cols-3 gap-2 p-1.5 bg-[#f4effa] rounded-2xl mb-5">
                   <button
                     type="button"
-                    onClick={() => setSelectedBank('santander')}
+                    onClick={() => setSelectedBank('bancolombia')}
                     className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      selectedBank === 'santander'
+                      selectedBank === 'bancolombia'
                         ? 'bg-white text-[#6100a4] shadow-sm'
                         : 'text-gray-600 hover:text-[#1d1a20]'
                     }`}
                   >
-                    Santander
+                    Bancolombia
                   </button>
                   <button
                     type="button"
-                    onClick={() => setSelectedBank('bancoestado')}
+                    onClick={() => setSelectedBank('nequi')}
                     className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      selectedBank === 'bancoestado'
+                      selectedBank === 'nequi'
                         ? 'bg-white text-[#6100a4] shadow-sm'
                         : 'text-gray-600 hover:text-[#1d1a20]'
                     }`}
                   >
-                    BancoEstado (RUT)
+                    Nequi
                   </button>
                   <button
                     type="button"
-                    onClick={() => setSelectedBank('bancochile')}
+                    onClick={() => setSelectedBank('daviplata')}
                     className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      selectedBank === 'bancochile'
+                      selectedBank === 'daviplata'
                         ? 'bg-white text-[#6100a4] shadow-sm'
                         : 'text-gray-600 hover:text-[#1d1a20]'
                     }`}
                   >
-                    Banco de Chile
+                    Daviplata
                   </button>
                 </div>
 
@@ -529,29 +533,29 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-[#6100a4] text-lg">assured_workload</span>
                       <span className="font-extrabold text-sm text-[#1d1a20]">
-                        {selectedBank === 'santander' && 'Banco Santander Chile'}
-                        {selectedBank === 'bancoestado' && 'BancoEstado de Chile'}
-                        {selectedBank === 'bancochile' && 'Banco de Chile / Banco Edwards'}
+                        {selectedBank === 'bancolombia' && 'Bancolombia (Cuenta Ahorros)'}
+                        {selectedBank === 'nequi' && 'Nequi Colombia'}
+                        {selectedBank === 'daviplata' && 'Daviplata Davivienda'}
                       </span>
                     </div>
                     <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#f1dbff] text-[#6100a4] font-bold">
-                      Cuenta {selectedBank === 'bancoestado' ? 'Vista (Cuenta RUT)' : 'Corriente'}
+                      {selectedBank === 'bancolombia' ? 'Ahorros' : 'Billetera Digital'}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
                       <span className="text-gray-500 block">Titular:</span>
-                      <strong className="text-gray-800 text-sm">Maraña Crochet SpA</strong>
+                      <strong className="text-gray-800 text-sm">Maraña Crochet Artesanal</strong>
                     </div>
 
                     <div>
-                      <span className="text-gray-500 block">RUT:</span>
+                      <span className="text-gray-500 block">NIT / CC:</span>
                       <div className="flex items-center justify-between">
-                        <strong className="text-gray-800 text-sm">77.382.901-4</strong>
+                        <strong className="text-gray-800 text-sm">901.542.883-1</strong>
                         <button
                           type="button"
-                          onClick={() => copyToClipboard('77.382.901-4', 'rut')}
+                          onClick={() => copyToClipboard('901.542.883-1', 'rut')}
                           className="text-[#6100a4] hover:underline font-bold text-[11px] cursor-pointer"
                         >
                           {copiedField === 'rut' ? '¡Copiado!' : 'Copiar'}
@@ -560,22 +564,20 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                     </div>
 
                     <div>
-                      <span className="text-gray-500 block">N° de Cuenta:</span>
+                      <span className="text-gray-500 block">N° de Cuenta / Celular:</span>
                       <div className="flex items-center justify-between">
                         <strong className="text-gray-800 text-sm">
-                          {selectedBank === 'santander' && '000-847291-4'}
-                          {selectedBank === 'bancoestado' && '18492301'}
-                          {selectedBank === 'bancochile' && '00-349-10928-02'}
+                          {selectedBank === 'bancolombia' && '824-000192-41'}
+                          {selectedBank === 'nequi' && '312 456 7890'}
+                          {selectedBank === 'daviplata' && '312 456 7890'}
                         </strong>
                         <button
                           type="button"
                           onClick={() =>
                             copyToClipboard(
-                              selectedBank === 'santander'
-                                ? '000-847291-4'
-                                : selectedBank === 'bancoestado'
-                                ? '18492301'
-                                : '00-349-10928-02',
+                              selectedBank === 'bancolombia'
+                                ? '824-000192-41'
+                                : '3124567890',
                               'account'
                             )
                           }
@@ -603,7 +605,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
 
                   <div className="mt-4 pt-3 border-t border-[#ede7f6] flex items-center justify-between text-xs bg-white p-3 rounded-xl">
                     <span className="text-gray-600 font-medium">Monto exacto a transferir:</span>
-                    <span className="text-lg font-extrabold text-[#6100a4]">${total.toLocaleString('es-CL')} CLP</span>
+                    <span className="text-lg font-extrabold text-[#6100a4]">${total.toLocaleString('es-CO')} COP</span>
                   </div>
                 </div>
 
@@ -628,7 +630,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                           Arrastra tu captura o haz clic para subir voucher
                         </p>
                         <p className="text-xs text-gray-500 mt-0.5">
-                          Soporta JPG, PNG, PDF bancario de Santander, BancoEstado, Banco de Chile, etc.
+                          Soporta JPG, PNG, PDF de transferencia Bancolombia, Nequi, Daviplata, etc.
                         </p>
                       </div>
                     </div>
@@ -718,11 +720,11 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                       </div>
                       <div className="text-right">
                         <div className="text-xs font-bold text-[#1d1a20]">
-                          ${(item.product.price * item.quantity).toLocaleString('es-CL')}
+                          ${(item.product.price * item.quantity).toLocaleString('es-CO')}
                         </div>
                         {item.quantity > 1 && (
                           <div className="text-[10px] text-gray-400">
-                            ${item.product.price.toLocaleString('es-CL')} c/u
+                            ${item.product.price.toLocaleString('es-CO')} c/u
                           </div>
                         )}
                       </div>
@@ -761,13 +763,13 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                 <div className="mt-5 space-y-2.5 text-xs pt-4 border-t border-gray-100">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal de productos</span>
-                    <span className="font-semibold text-gray-900">${subtotal.toLocaleString('es-CL')} CLP</span>
+                    <span className="font-semibold text-gray-900">${subtotal.toLocaleString('es-CO')} COP</span>
                   </div>
 
                   {discountPercent > 0 && (
                     <div className="flex justify-between text-emerald-700 font-semibold">
                       <span>Descuento ({discountPercent}%)</span>
-                      <span>-${discountAmount.toLocaleString('es-CL')} CLP</span>
+                      <span>-${discountAmount.toLocaleString('es-CO')} COP</span>
                     </div>
                   )}
 
@@ -776,7 +778,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                       <span>Envío ({shippingMethod})</span>
                       <span className="material-symbols-outlined text-xs text-gray-400">help_outline</span>
                     </div>
-                    <span className="font-semibold text-gray-900">${shippingCost.toLocaleString('es-CL')} CLP</span>
+                    <span className="font-semibold text-gray-900">${shippingCost.toLocaleString('es-CO')} COP</span>
                   </div>
 
                   <div className="pt-3 border-t border-gray-100 flex justify-between items-baseline">
@@ -785,7 +787,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                       <div className="text-[11px] text-gray-500">Impuestos y empaque de regalo incluidos</div>
                     </div>
                     <div className="text-2xl font-black text-[#6100a4]">
-                      ${total.toLocaleString('es-CL')} <span className="text-xs font-bold text-gray-500">CLP</span>
+                      ${total.toLocaleString('es-CO')} <span className="text-xs font-bold text-gray-500">COP</span>
                     </div>
                   </div>
                 </div>
@@ -821,7 +823,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                     • Tu producto es reservado por 30 minutos mientras el taller verifica la transferencia.
                   </p>
                   <p>
-                    • Te enviaremos código de seguimiento de Chilexpress o Starken directo a tu WhatsApp y correo.
+                    • Te enviaremos código de seguimiento de Inter Rapidísimo o Servientrega directo a tu WhatsApp y correo.
                   </p>
                 </div>
               </div>
@@ -832,3 +834,4 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
     </main>
   );
 };
+

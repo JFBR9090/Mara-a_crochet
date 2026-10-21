@@ -72,7 +72,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 auto_awesome
               </span>
               {missingForGift > 0
-                ? `✨ ¡Falta solo $${missingForGift.toLocaleString('es-CL')} CLP para Empaque de Regalo Gratis!`
+                ? `✨ ¡Falta solo $${missingForGift.toLocaleString('es-CO')} COP para Empaque de Regalo Gratis!`
                 : '✨ ¡Empaque de Regalo Gratis Desbloqueado!'}
             </span>
             <span className="font-bold text-primary">{progressPercent}%</span>
@@ -169,7 +169,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       </button>
                     </div>
                     <span className="font-headline-sm text-base font-extrabold text-primary">
-                      ${(item.product.price * item.quantity).toLocaleString('es-CL')} CLP
+                      ${(item.product.price * item.quantity).toLocaleString('es-CO')} COP
                     </span>
                   </div>
                 </div>
@@ -197,7 +197,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="flex justify-between text-on-surface-variant">
                 <span>Subtotal</span>
                 <span className="font-bold text-on-surface">
-                  ${subtotal.toLocaleString('es-CL')} CLP{' '}
+                  ${subtotal.toLocaleString('es-CO')} COP{' '}
                   <span className="font-normal text-on-surface-variant text-[11px]">
                     (~${(subtotal / 890).toFixed(2)} USD)
                   </span>
@@ -211,12 +211,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </div>
               <div className="flex justify-between text-on-surface-variant">
                 <span>Estimación de Envío</span>
-                <span className="text-on-surface font-medium">Calculado en checkout (Todo Chile)</span>
+                <span className="text-on-surface font-medium">Calculado en checkout (Colombia)</span>
               </div>
               <div className="flex justify-between pt-2.5 border-t border-surface-container-high items-baseline">
                 <span className="font-headline-sm text-base font-bold text-on-surface">Total Final</span>
                 <span className="font-headline-lg text-2xl font-extrabold text-primary">
-                  ${subtotal.toLocaleString('es-CL')} CLP
+                  ${subtotal.toLocaleString('es-CO')} COP
                 </span>
               </div>
             </div>
@@ -265,3 +265,4 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     </div>
   );
 };
+

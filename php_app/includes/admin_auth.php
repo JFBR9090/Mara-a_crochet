@@ -110,3 +110,4 @@ function requireAdminAuth(): void {
         exit();
     }
 }
+

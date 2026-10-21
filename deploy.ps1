@@ -45,13 +45,10 @@ Copy-Item -Path "composer.json" -Destination $Destination -Force
 # 5. Crear .htaccess para soporte de rutas SPA y APIs
 Write-Host "[5/5] Configurando directivas de Apache en .htaccess..." -ForegroundColor Yellow
 $HtaccessContent = @"
+DirectoryIndex index.php index.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /marana/
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /marana/index.html [L]
 </IfModule>
 "@
 Set-Content -Path "$Destination\.htaccess" -Value $HtaccessContent -Encoding UTF8

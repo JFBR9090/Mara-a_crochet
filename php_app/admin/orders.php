@@ -147,7 +147,7 @@ require __DIR__ . '/../includes/header.php';
 
     <div class="card-panel" style="margin-bottom: 0; padding: 1.25rem; border-left: 3px solid var(--color-success);">
       <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-success); margin-bottom: 0.35rem;">Ventas Totales</div>
-      <div style="font-size: 1.65rem; font-weight: 800; color: var(--color-success);"><?= formatCLP($totalSales) ?></div>
+      <div style="font-size: 1.65rem; font-weight: 800; color: var(--color-success);"><?= formatCOP($totalSales) ?></div>
       <div style="font-size: 0.75rem; color: var(--color-neutral-light); margin-top: 0.25rem;">Transferencias confirmadas</div>
     </div>
   </div>
@@ -170,7 +170,7 @@ require __DIR__ . '/../includes/header.php';
       <?php endif; ?>
       <div class="search-wrapper">
         <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" name="q" value="<?= h($searchQuery) ?>" placeholder="Buscar cliente, RUT, orden..." class="search-input" style="padding-top: 0.45rem; padding-bottom: 0.45rem;">
+        <input type="text" name="q" value="<?= h($searchQuery) ?>" placeholder="Buscar cliente, Cédula CC, orden..." class="search-input" style="padding-top: 0.45rem; padding-bottom: 0.45rem;">
       </div>
     </form>
   </div>
@@ -220,7 +220,7 @@ require __DIR__ . '/../includes/header.php';
                 <td>
                   <span class="status-pill <?= $statusClass ?>"><?= strtoupper(h($ord['status'])) ?></span>
                 </td>
-                <td style="text-align: right; font-weight: 700;"><?= formatCLP($ord['total']) ?></td>
+                <td style="text-align: right; font-weight: 700;"><?= formatCOP($ord['total']) ?></td>
                 <td style="text-align: center;">
                   <!-- Botón de Etiqueta con icono de edición según requerimiento -->
                   <a href="<?= $baseUrl ?>/admin/orders.php?selected=<?= urlencode($ord['id']) ?>" class="tag-btn-edit" title="Gestionar Pedido">
@@ -312,7 +312,7 @@ require __DIR__ . '/../includes/header.php';
           </div>
           <div style="font-size: 0.82rem; line-height: 1.45; color: var(--color-neutral-dark);">
             Banco: <strong><?= h($selectedOrder['bank']) ?></strong> (<?= h($selectedOrder['accountType']) ?>)<br>
-            Monto Transferido: <strong><?= formatCLP($selectedOrder['total']) ?></strong><br>
+            Monto Transferido: <strong><?= formatCOP($selectedOrder['total']) ?></strong><br>
             Comprobante adjunto: <em><?= h($selTransfer['voucherFilename'] ?? 'comprobante_transferencia.pdf') ?></em>
           </div>
 
@@ -344,7 +344,7 @@ require __DIR__ . '/../includes/header.php';
           <?php foreach ($selItems as $it): ?>
             <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
               <span><?= (int)$it['quantity'] ?>x <?= h($it['productName']) ?></span>
-              <span style="font-weight: 600;"><?= formatCLP($it['price'] * $it['quantity']) ?></span>
+              <span style="font-weight: 600;"><?= formatCOP($it['price'] * $it['quantity']) ?></span>
             </div>
           <?php endforeach; ?>
         </div>
@@ -377,3 +377,4 @@ require __DIR__ . '/../includes/header.php';
 </div>
 
 <?php require __DIR__ . '/../includes/footer.php'; ?>
+

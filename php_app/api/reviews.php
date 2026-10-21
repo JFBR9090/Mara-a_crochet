@@ -100,3 +100,4 @@ if ($method === 'PUT' || $method === 'PATCH') {
     ]);
     exit();
 }
+

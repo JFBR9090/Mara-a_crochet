@@ -10,7 +10,7 @@ $baseUrl = getBaseUrl();
       <!-- Columna 1: Marca y Filosofía -->
       <div>
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
-          <div class="brand-mark" style="width: 1.8rem; height: 1.8rem; font-size: 0.95rem;">M</div>
+          <img src="<?= $baseUrl ?>/assets/img/logo.png" alt="Logo Maraña Crochet" style="width: 2.8rem; height: 2.8rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-primary); box-shadow: 0 2px 8px rgba(123, 44, 191, 0.2);">
           <span style="font-size: 1.1rem; font-weight: 800; color: var(--color-neutral-dark);">Maraña Crochet</span>
         </div>
         <p style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;">
@@ -83,3 +83,4 @@ $baseUrl = getBaseUrl();
 <script src="<?= $baseUrl ?>/assets/js/main.js"></script>
 </body>
 </html>
+

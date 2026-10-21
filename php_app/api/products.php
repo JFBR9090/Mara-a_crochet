@@ -85,3 +85,4 @@ if ($method === 'PUT' || $method === 'POST') {
 }
 
 Response::error("Método HTTP '{$method}' no permitido", 405);
+

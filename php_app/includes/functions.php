@@ -41,10 +41,17 @@ function h(?string $str): string {
 }
 
 /**
- * Formatear número a moneda chilena (CLP)
+ * Formatear número a moneda colombiana (COP)
+ */
+function formatCOP(float|int $amount): string {
+    return '$' . number_format($amount, 0, ',', '.') . ' COP';
+}
+
+/**
+ * Alias de compatibilidad formatCLP -> formatCOP
  */
 function formatCLP(float|int $amount): string {
-    return '$' . number_format($amount, 0, ',', '.');
+    return formatCOP($amount);
 }
 
 /**
@@ -150,3 +157,4 @@ function toggleFavorite(string $productId): bool {
         return true; // Agregado
     }
 }
+

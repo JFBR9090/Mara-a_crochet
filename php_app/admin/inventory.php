@@ -62,7 +62,7 @@ $materials = [
         'unit' => 'ovillos (100g)',
         'min' => 5,
         'status' => 'ok',
-        'supplier' => 'Lanas del Sur SpA'
+        'supplier' => 'Hilazas & Lanas de Colombia S.A.S.'
     ],
     [
         'name' => 'Hilo Algodón Peinado Tangüis Púrpura Profundo',
@@ -71,7 +71,7 @@ $materials = [
         'unit' => 'madejas (100g)',
         'min' => 4,
         'status' => 'ok',
-        'supplier' => 'Hilandería Textil Santiago'
+        'supplier' => 'Hilandería del Huila S.A.S.'
     ],
     [
         'name' => 'Ojos de Seguridad Negros 12mm con Traba',
@@ -80,7 +80,7 @@ $materials = [
         'unit' => 'pares',
         'min' => 25,
         'status' => 'critical',
-        'supplier' => 'Mercería Central'
+        'supplier' => 'Mercería Central Neiva'
     ],
     [
         'name' => 'Vellón Siliconado Hipoalergénico Extra Soft',
@@ -89,7 +89,7 @@ $materials = [
         'unit' => 'kg',
         'min' => 3,
         'status' => 'ok',
-        'supplier' => 'Distribuidora Rellenos Chile'
+        'supplier' => 'Distribuidora Algodones de Colombia'
     ],
     [
         'name' => 'Cajas de Embalaje Kraft & Flores de Lavanda',
@@ -173,7 +173,7 @@ require __DIR__ . '/../includes/header.php';
               <div style="font-size: 0.72rem; color: var(--color-primary);"><?= h($p['categoryLabel']) ?></div>
             </td>
             <td style="font-weight: 700; font-size: 0.95rem;">
-              <?= formatCLP($p['price']) ?>
+              <?= formatCOP($p['price']) ?>
             </td>
             <td style="min-width: 160px;">
               <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">
@@ -268,7 +268,7 @@ require __DIR__ . '/../includes/header.php';
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="modal-price">Precio de Venta (CLP):</label>
+        <label class="form-label" for="modal-price">Precio de Venta (COP):</label>
         <input type="number" id="modal-price" name="price" min="0" step="100" required class="form-control">
       </div>
 
@@ -296,3 +296,4 @@ require __DIR__ . '/../includes/header.php';
 </script>
 
 <?php require __DIR__ . '/../includes/footer.php'; ?>
+

@@ -386,17 +386,17 @@ require __DIR__ . '/includes/header.php';
         
         <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem;">
           <span>Subtotal amigurumis (<?= getCartCount() ?> piezas):</span>
-          <span style="font-weight: 700;"><?= formatCLP($subtotal) ?> COP</span>
+          <span style="font-weight: 700;"><?= formatCOP($subtotal) ?></span>
         </div>
 
         <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem;">
           <span>Costo de envío nacional:</span>
-          <span id="summary-shipping" style="font-weight: 700;"><?= formatCLP(14500) ?> COP</span>
+          <span id="summary-shipping" style="font-weight: 700;"><?= formatCOP(14500) ?></span>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.25rem; border-top: 1px solid var(--color-neutral-border); padding-top: 1rem; margin-top: 1rem; margin-bottom: 1.5rem;">
           <span style="font-weight: 800;">Total a Transferir:</span>
-          <span id="summary-total" style="font-size: 1.75rem; font-weight: 800; color: var(--color-primary);"><?= formatCLP($subtotal + 14500) ?> COP</span>
+          <span id="summary-total" style="font-size: 1.75rem; font-weight: 800; color: var(--color-primary);"><?= formatCOP($subtotal + 14500) ?></span>
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 1.05rem;">
@@ -425,3 +425,4 @@ require __DIR__ . '/includes/header.php';
 </script>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
+

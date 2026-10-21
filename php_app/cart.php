@@ -91,7 +91,7 @@ require __DIR__ . '/includes/header.php';
                       </div>
                     </div>
                   </td>
-                  <td style="font-weight: 600;"><?= formatCLP($item['price']) ?></td>
+                  <td style="font-weight: 600;"><?= formatCOP($item['price']) ?></td>
                   <td style="text-align: center;">
                     <div style="display: inline-flex; align-items: center; border: 1px solid var(--color-neutral-border); border-radius: var(--radius-sm); overflow: hidden;">
                       <button type="button" onclick="updateItemQuantity('<?= h($item['id']) ?>', -1)" style="padding: 0.25rem 0.55rem; background: var(--color-neutral-bg); border: none; cursor: pointer;">-</button>
@@ -99,7 +99,7 @@ require __DIR__ . '/includes/header.php';
                       <button type="button" onclick="updateItemQuantity('<?= h($item['id']) ?>', 1)" style="padding: 0.25rem 0.55rem; background: var(--color-neutral-bg); border: none; cursor: pointer;">+</button>
                     </div>
                   </td>
-                  <td style="text-align: right; font-weight: 800;"><?= formatCLP($itemTotal) ?></td>
+                  <td style="text-align: right; font-weight: 800;"><?= formatCOP($itemTotal) ?></td>
                   <td style="text-align: right;">
                     <button type="button" onclick="removeCartItem('<?= h($item['id']) ?>')" style="background: none; border: none; color: var(--color-neutral-light); cursor: pointer; font-size: 1.25rem;" title="Eliminar">&times;</button>
                   </td>
@@ -124,7 +124,7 @@ require __DIR__ . '/includes/header.php';
             
             <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.75rem;">
               <span class="text-muted">Subtotal productos:</span>
-              <span style="font-weight: 700;"><?= formatCLP($subtotal) ?></span>
+              <span style="font-weight: 700;"><?= formatCOP($subtotal) ?></span>
             </div>
 
             <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.75rem;">
@@ -138,12 +138,12 @@ require __DIR__ . '/includes/header.php';
             </div>
 
             <div style="background: var(--color-primary-subtle); border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--color-primary);">
-              <strong>Despacho:</strong> Se calcula en el siguiente paso según tu comuna o región (Express RM $3.990 / Regiones $5.990 / Retiro en Taller Gratis).
+              <strong>Despacho Nacional (Colombia):</strong> Se selecciona en el siguiente paso (Envío Local Neiva $6.000 COP / Envío Nacional Colombia $14.500 COP / Retiro en Taller Neiva Gratis).
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.15rem; border-top: 1px solid var(--color-neutral-border); padding-top: 1rem; margin-bottom: 1.5rem;">
               <span style="font-weight: 700;">Total Estimado:</span>
-              <span style="font-size: 1.5rem; font-weight: 800; color: var(--color-primary);"><?= formatCLP($subtotal) ?></span>
+              <span style="font-size: 1.5rem; font-weight: 800; color: var(--color-primary);"><?= formatCOP($subtotal) ?></span>
             </div>
 
             <a href="<?= $baseUrl ?>/checkout.php" class="btn btn-primary btn-lg" style="width: 100%;">
@@ -151,7 +151,7 @@ require __DIR__ . '/includes/header.php';
             </a>
 
             <div style="margin-top: 1rem; text-align: center; font-size: 0.75rem; color: var(--color-neutral-light);">
-              🔒 Pago seguro directo mediante Transferencia Electrónica (TEF)
+              🔒 Pago seguro directo vía Bancolombia, Nequi, Daviplata o Davivienda con Comprobante Oficial.
             </div>
           </div>
         </div>
@@ -162,3 +162,4 @@ require __DIR__ . '/includes/header.php';
 </div>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
+

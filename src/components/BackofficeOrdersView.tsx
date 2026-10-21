@@ -93,7 +93,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
     if (!selectedOrder) return;
     const phoneClean = selectedOrder.customerPhone.replace(/[^0-9]/g, '');
     const message = encodeURIComponent(
-      `¡Hola ${selectedOrder.customerName}! 🌸 Te escribimos de Maraña Crochet respecto a tu pedido ${selectedOrder.id}.\n\nHemos revisado tu transferencia de $${selectedOrder.total.toLocaleString('es-CL')} CLP con éxito. Tu pedido de amigurumis tejidos a mano ya se encuentra en proceso de empaque con su certificado de adopción y aroma artesanal.\n\n¡Muchas gracias por apoyar nuestro taller artesanal! ✨`
+      `¡Hola ${selectedOrder.customerName}! 🌸 Te escribimos de Maraña Crochet respecto a tu pedido ${selectedOrder.id}.\n\nHemos revisado tu transferencia de $${selectedOrder.total.toLocaleString('es-CO')} COP con éxito. Tu pedido de amigurumis tejidos a mano ya se encuentra en proceso de empaque con su certificado de adopción y aroma artesanal.\n\n¡Muchas gracias por apoyar nuestro taller artesanal! ✨`
     );
     window.open(`https://wa.me/${phoneClean}?text=${message}`, '_blank');
   };
@@ -119,7 +119,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                 </span>
               </div>
               <p className="text-xs text-gray-500">
-                Validación de transferencias bancarias chilenas, empaque y despacho
+                Validación de transferencias bancarias colombianas, empaque y despacho
               </p>
             </div>
           </div>
@@ -169,7 +169,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
               <div className="text-2xl font-black text-[#1d1a20] mt-1">{readyForDispatch} pedidos</div>
               <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1 mt-0.5">
                 <span className="material-symbols-outlined text-xs">local_shipping</span>
-                Chilexpress & Starken hoy
+                Inter Rapidísimo & Servientrega hoy
               </span>
             </div>
             <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
@@ -183,7 +183,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                 Ventas Confirmadas Hoy
               </span>
               <div className="text-2xl font-black text-[#6100a4] mt-1">
-                ${totalSalesToday.toLocaleString('es-CL')} <span className="text-xs font-bold text-gray-500">CLP</span>
+                ${totalSalesToday.toLocaleString('es-CO')} <span className="text-xs font-bold text-gray-500">COP</span>
               </div>
               <span className="text-[11px] text-[#6100a4] font-semibold flex items-center gap-1 mt-0.5">
                 <span className="material-symbols-outlined text-xs">trending_up</span>
@@ -277,10 +277,11 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
               onChange={(e) => setBankFilter(e.target.value)}
               className="border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-semibold bg-white outline-none focus:border-[#6100a4]"
             >
-              <option value="todos">Todos los Bancos</option>
-              <option value="Santander">Santander</option>
-              <option value="BancoEstado">BancoEstado (Cuenta RUT)</option>
-              <option value="Chile">Banco de Chile</option>
+              <option value="todos">Todas las Entidades</option>
+              <option value="Bancolombia">Bancolombia</option>
+              <option value="Nequi">Nequi</option>
+              <option value="Daviplata">Daviplata</option>
+              <option value="Davivienda">Davivienda</option>
             </select>
           </div>
         </div>
@@ -359,7 +360,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                           </span>
                         </div>
                         <div className="font-extrabold text-sm text-[#6100a4]">
-                          ${order.total.toLocaleString('es-CL')} CLP
+                          ${order.total.toLocaleString('es-CO')} COP
                         </div>
                       </div>
                     </div>
@@ -437,7 +438,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                 </div>
               </div>
 
-              {/* Chilean Bank Transfer Receipt Inspector (Image 12) */}
+              {/* Colombian Bank Transfer Receipt Inspector */}
               <div className="bg-white rounded-3xl p-6 border border-[#ede7f6] shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -484,7 +485,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                       <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
                         <span className="text-[10px] text-gray-400 block">Monto Transferido</span>
                         <strong className="text-[#6100a4] font-extrabold">
-                          ${selectedOrder.transferDetails.transferredAmount.toLocaleString('es-CL')} CLP
+                          ${selectedOrder.transferDetails.transferredAmount.toLocaleString('es-CO')} COP
                         </strong>
                       </div>
                     </div>
@@ -539,7 +540,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                           Cant: <strong>{item.quantity}</strong>
                         </span>
                         <span className="text-xs font-extrabold text-[#1d1a20]">
-                          ${(item.price * item.quantity).toLocaleString('es-CL')}
+                          ${(item.price * item.quantity).toLocaleString('es-CO')}
                         </span>
                       </div>
                     </div>
@@ -555,7 +556,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                     Rótulo de Envío y Despacho
                   </h3>
                   <span className="text-xs font-bold text-[#6100a4] bg-[#f1dbff] px-2.5 py-0.5 rounded-full">
-                    {selectedOrder.shippingMethod === 'express-rm' ? 'Chilexpress Prioritario' : 'Envío a Regiones'}
+                    {selectedOrder.shippingMethod === 'nacional-colombia' || selectedOrder.shippingMethod === 'express-rm' ? 'Envío Nacional (Inter Rapidísimo / Servientrega)' : 'Envío Local Neiva'}
                   </span>
                 </div>
 
@@ -564,7 +565,7 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
                     <div>
                       <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Destinatario</span>
                       <strong className="text-sm text-gray-800">{selectedOrder.customerName}</strong>
-                      <p className="text-gray-500">RUT: {selectedOrder.customerRut}</p>
+                      <p className="text-gray-500">Cédula CC: {selectedOrder.customerRut}</p>
                       <p className="text-gray-500">Tel: {selectedOrder.customerPhone}</p>
                     </div>
 
@@ -684,3 +685,4 @@ export const BackofficeOrdersView: React.FC<BackofficeOrdersViewProps> = ({
     </div>
   );
 };
+

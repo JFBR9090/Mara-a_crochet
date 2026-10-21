@@ -59,7 +59,7 @@ const INITIAL_MATERIALS: RawMaterial[] = [
     unit: 'kg',
     minLevel: 3,
     status: 'ok',
-    supplier: 'Distribuidora Rellenos Chile',
+    supplier: 'Distribuidora Rellenos Colombia',
   },
   {
     id: 'mat-05',
@@ -79,7 +79,7 @@ const INITIAL_MATERIALS: RawMaterial[] = [
     unit: 'unidades',
     minLevel: 15,
     status: 'ok',
-    supplier: 'EcoPackaging Chile',
+    supplier: 'EcoPackaging Colombia',
   },
 ];
 
@@ -126,7 +126,7 @@ export const BackofficeInventoryView: React.FC<BackofficeInventoryViewProps> = (
       setEditingPriceId(null);
       onShowToast(
         'Precio Actualizado',
-        `Nuevo precio fijado en $${tempPrice.toLocaleString('es-CL')} CLP`,
+        `Nuevo precio fijado en $${tempPrice.toLocaleString('es-CO')} COP`,
         'success'
       );
     }
@@ -334,7 +334,7 @@ export const BackofficeInventoryView: React.FC<BackofficeInventoryViewProps> = (
                 <tr className="border-b border-gray-100 text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">
                   <th className="py-3 px-4">Amigurumi</th>
                   <th className="py-3 px-4">Categoría / Colección</th>
-                  <th className="py-3 px-4">Precio (CLP)</th>
+                  <th className="py-3 px-4">Precio (COP)</th>
                   <th className="py-3 px-4">Stock Disponible</th>
                   <th className="py-3 px-4">Estado</th>
                   <th className="py-3 px-4 text-right">Tiempos de Tejido</th>
@@ -397,7 +397,7 @@ export const BackofficeInventoryView: React.FC<BackofficeInventoryViewProps> = (
                         ) : (
                           <div className="flex items-center gap-2">
                             <span className="font-extrabold text-sm text-[#1d1a20]">
-                              ${product.price.toLocaleString('es-CL')}
+                              ${product.price.toLocaleString('es-CO')}
                             </span>
                             <button
                               onClick={() => {
@@ -547,3 +547,4 @@ export const BackofficeInventoryView: React.FC<BackofficeInventoryViewProps> = (
     </div>
   );
 };
+

@@ -76,7 +76,7 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
                   </div>
                   <div className="text-right">
                     <span className="text-sm font-extrabold text-[#1d1a20]">
-                      ${(item.price * item.quantity).toLocaleString('es-CL')} CLP
+                      ${(item.price * item.quantity).toLocaleString('es-CO')} COP
                     </span>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
               <p className="text-gray-600 font-medium">{order.customerName}</p>
               <p className="text-gray-600">{order.address.street} {order.address.dept || ''}</p>
               <p className="text-gray-600">{order.address.comuna}, {order.address.region}</p>
-              <p className="text-gray-500 mt-1">Método: <strong>{order.shippingMethod === 'express-rm' ? 'Chilexpress Prioritario' : 'Envío a Regiones'}</strong></p>
+              <p className="text-gray-500 mt-1">Método: <strong>{order.shippingMethod === 'nacional-colombia' || order.shippingMethod === 'express-rm' ? 'Envío Nacional (Inter Rapidísimo / Servientrega)' : 'Envío Local Neiva / Retiro'}</strong></p>
               {order.address.instructions && (
                 <p className="text-gray-500 italic mt-1">Nota: "{order.address.instructions}"</p>
               )}
@@ -105,8 +105,8 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
                 <span className="material-symbols-outlined text-sm text-[#6100a4]">account_balance</span>
                 Detalle de Transferencia
               </h4>
-              <p className="text-gray-600">Banco: <strong>{order.bank} ({order.accountType})</strong></p>
-              <p className="text-gray-600">Total Transferido: <strong className="text-[#6100a4]">${order.total.toLocaleString('es-CL')} CLP</strong></p>
+              <p className="text-gray-600">Banco / Entidad: <strong>{order.bank} ({order.accountType})</strong></p>
+              <p className="text-gray-600">Total Transferido: <strong className="text-[#6100a4]">${order.total.toLocaleString('es-CO')} COP</strong></p>
               <p className="text-gray-600">Código TEF: <strong>{order.transferDetails.tefCode}</strong></p>
               <p className="text-gray-500 mt-1">Notificación: Enviada a {order.customerEmail}</p>
             </div>
@@ -128,7 +128,7 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
             <div>
               <span className="text-xs text-gray-500">Monto Final Pagado</span>
               <div className="text-2xl font-black text-[#6100a4]">
-                ${order.total.toLocaleString('es-CL')} <span className="text-xs font-semibold text-gray-500">CLP</span>
+                ${order.total.toLocaleString('es-CO')} <span className="text-xs font-semibold text-gray-500">COP</span>
               </div>
             </div>
 
@@ -169,3 +169,4 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
     </main>
   );
 };
+

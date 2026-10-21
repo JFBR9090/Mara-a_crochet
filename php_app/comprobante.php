@@ -34,7 +34,7 @@ $folio = $transfer['folio'] ?? 'TEF-94827103';
 $bankName = $order['bank'] ?? 'Bancolombia';
 
 // Texto para compartir por WhatsApp
-$waMessage = urlencode("Hola Taller Maraña Crochet, adjunto mi comprobante de pago para el pedido {$order['id']} por valor de " . formatCLP($order['total']) . ". Mi nombre es {$order['customerName']}.");
+$waMessage = urlencode("Hola Taller Maraña Crochet, adjunto mi comprobante de pago para el pedido {$order['id']} por valor de " . formatCOP($order['total']) . ". Mi nombre es {$order['customerName']}.");
 $waUrl = "https://api.whatsapp.com/send?phone=573124567890&text={$waMessage}";
 ?>
 <!DOCTYPE html>
@@ -514,17 +514,20 @@ $waUrl = "https://api.whatsapp.com/send?phone=573124567890&text={$waMessage}";
     <!-- Encabezado con Identidad y Serie -->
     <header class="receipt-header">
       <div class="brand-row">
-        <div class="brand-info">
-          <h1>
-            <span>Maraña Crochet</span>
-            <span class="brand-badge">Taller Artesanal</span>
-          </h1>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <img src="<?= $baseUrl ?>/assets/img/logo.png" alt="Logo Maraña" style="width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--color-primary); box-shadow: 0 4px 12px rgba(123, 44, 191, 0.25);">
+          <div class="brand-info">
+            <h1>
+              <span>Maraña Crochet</span>
+              <span class="brand-badge">Taller Artesanal</span>
+            </h1>
           <div class="brand-meta">
             <strong>MARAÑA CROCHET ARTESANAL</strong> • NIT: 901.542.883-1<br>
             📍 Carrera 5 # 12-45, Centro · <strong>Neiva, Huila, Colombia</strong><br>
             🇨🇴 Envíos Exclusivamente a Nivel Nacional · WhatsApp: (+57) 312 456 7890
           </div>
         </div>
+      </div>
 
         <div class="voucher-stamp">
           <div class="voucher-title">Comprobante de Pago</div>
@@ -614,10 +617,10 @@ $waUrl = "https://api.whatsapp.com/send?phone=573124567890&text={$waMessage}";
                   <?= (int)$item['quantity'] ?>
                 </td>
                 <td style="text-align: right;">
-                  <?= formatCLP($item['price']) ?>
+                  <?= formatCOP($item['price']) ?>
                 </td>
                 <td style="text-align: right; font-weight: 700; color: var(--color-dark);">
-                  <?= formatCLP($item['price'] * $item['quantity']) ?>
+                  <?= formatCOP($item['price'] * $item['quantity']) ?>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -630,15 +633,15 @@ $waUrl = "https://api.whatsapp.com/send?phone=573124567890&text={$waMessage}";
         <div class="totals-box">
           <div class="total-row">
             <span>Subtotal Amigurumis:</span>
-            <span><?= formatCLP($order['subtotal']) ?> COP</span>
+            <span><?= formatCOP($order['subtotal']) ?></span>
           </div>
           <div class="total-row">
             <span>Envío Nacional (<?= h($order['shippingMethod'] ?? 'Despacho Nacional') ?>):</span>
-            <span><?= formatCLP($order['shippingCost']) ?> COP</span>
+            <span><?= formatCOP($order['shippingCost']) ?></span>
           </div>
           <div class="total-row final">
             <span>Total Pagado:</span>
-            <span><?= formatCLP($order['total']) ?> COP</span>
+            <span><?= formatCOP($order['total']) ?></span>
           </div>
         </div>
       </div>
@@ -687,3 +690,4 @@ $waUrl = "https://api.whatsapp.com/send?phone=573124567890&text={$waMessage}";
 
 </body>
 </html>
+

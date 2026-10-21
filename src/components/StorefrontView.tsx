@@ -131,7 +131,7 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
               </div>
               <div className="flex items-center gap-2.5 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/10">
                 <span className="material-symbols-outlined text-secondary text-xl">local_shipping</span>
-                <span className="font-label-md text-xs sm:text-sm text-on-surface font-semibold">Envíos a todo Chile</span>
+                <span className="font-label-md text-xs sm:text-sm text-on-surface font-semibold">Envíos a toda Colombia</span>
               </div>
               <div className="flex items-center gap-2.5 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/10">
                 <span className="material-symbols-outlined text-accent-star-gold text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
@@ -220,10 +220,10 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                   </div>
                   <div className="text-right">
                     <span className="font-headline-md text-xl font-extrabold text-primary">
-                      ${luluProduct.price.toLocaleString('es-CL')}
+                      ${luluProduct.price.toLocaleString('es-CO')}
                     </span>
                     <span className="block font-label-sm text-xs text-on-surface-variant line-through">
-                      ${luluProduct.originalPrice?.toLocaleString('es-CL')} CLP
+                      ${luluProduct.originalPrice?.toLocaleString('es-CO')} COP
                     </span>
                   </div>
                 </div>
@@ -529,9 +529,9 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
                     <div className="pt-4 mt-3 flex items-center justify-between border-t border-surface-container-high/60">
                       <div>
                         <span className={`font-headline-sm text-lg font-extrabold ${isSoldOut ? 'text-outline' : 'text-primary'}`}>
-                          ${product.price.toLocaleString('es-CL')}
+                          ${product.price.toLocaleString('es-CO')}
                         </span>
-                        <span className="block font-label-sm text-[10px] text-on-surface-variant">CLP</span>
+                        <span className="block font-label-sm text-[10px] text-on-surface-variant">COP</span>
                       </div>
 
                       {isSoldOut ? (
@@ -787,3 +787,4 @@ export const StorefrontView: React.FC<StorefrontViewProps> = ({
     </div>
   );
 };
+

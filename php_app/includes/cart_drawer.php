@@ -52,7 +52,7 @@ $baseUrl = getBaseUrl();
                 <span style="padding: 0.2rem 0.6rem; font-size: 0.85rem; font-weight: 600;"><?= (int)$item['quantity'] ?></span>
                 <button type="button" onclick="updateItemQuantity('<?= h($item['id']) ?>', 1)" style="padding: 0.2rem 0.5rem; background: var(--color-neutral-bg); border: none; cursor: pointer;">+</button>
               </div>
-              <span style="font-weight: 700; font-size: 0.95rem; color: var(--color-neutral-dark);"><?= formatCLP($item['price'] * $item['quantity']) ?></span>
+              <span style="font-weight: 700; font-size: 0.95rem; color: var(--color-neutral-dark);"><?= formatCOP($item['price'] * $item['quantity']) ?></span>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@ $baseUrl = getBaseUrl();
     <div class="cart-drawer-footer">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
         <span style="font-size: 0.85rem; color: var(--color-neutral-medium);">Subtotal:</span>
-        <span id="cart-drawer-subtotal" style="font-size: 1.15rem; font-weight: 800; color: var(--color-neutral-dark);"><?= formatCLP($subtotal) ?></span>
+        <span id="cart-drawer-subtotal" style="font-size: 1.15rem; font-weight: 800; color: var(--color-neutral-dark);"><?= formatCOP($subtotal) ?></span>
       </div>
       <p style="font-size: 0.72rem; color: var(--color-neutral-light); margin-bottom: 1rem;">
         ✓ Incluye certificado de adopción y aroma de lavanda.<br>
@@ -78,3 +78,4 @@ $baseUrl = getBaseUrl();
     </div>
   <?php endif; ?>
 </aside>
+

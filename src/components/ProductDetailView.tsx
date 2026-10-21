@@ -183,11 +183,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <div className="p-5 rounded-3xl bg-surface-container-low/80 flex flex-col gap-2 border border-outline-variant/15">
             <div className="flex items-baseline gap-3">
               <span className="font-headline-lg text-3xl font-extrabold text-primary">
-                ${product.price.toLocaleString('es-CL')} CLP
+                ${product.price.toLocaleString('es-CO')} COP
               </span>
               {product.originalPrice && (
                 <span className="font-body-md text-base line-through text-outline">
-                  ${product.originalPrice.toLocaleString('es-CL')} CLP
+                  ${product.originalPrice.toLocaleString('es-CO')} COP
                 </span>
               )}
               {product.discountBadge && (
@@ -756,7 +756,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
               <div className="pt-4 mt-2 flex items-center justify-between border-t border-surface-container-high">
                 <span className="font-headline-sm text-base font-extrabold text-primary">
-                  ${rel.price.toLocaleString('es-CL')} CLP
+                  ${rel.price.toLocaleString('es-CO')} COP
                 </span>
                 <button
                   type="button"
@@ -774,3 +774,4 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
     </div>
   );
 };
+

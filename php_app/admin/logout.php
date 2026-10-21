@@ -7,3 +7,4 @@ adminLogout();
 setFlash('info', 'Sesión Finalizada', 'Has cerrado la sesión administrativa del taller correctamente.');
 header('Location: ' . getBaseUrl() . '/admin/login.php');
 exit();
+

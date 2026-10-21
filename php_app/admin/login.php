@@ -44,12 +44,7 @@ require __DIR__ . '/../includes/header.php';
     
     <!-- Encabezado con Icono -->
     <div style="text-align: center; margin-bottom: 2rem;">
-      <div style="width: 3.75rem; height: 3.75rem; border-radius: 50%; background: var(--color-primary-bg); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; border: 2px solid var(--color-primary-border);">
-        <svg style="width: 1.85rem; height: 1.85rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-        </svg>
-      </div>
+      <img src="<?= $baseUrl ?>/assets/img/logo.png" alt="Logo Maraña Crochet" style="width: 5.5rem; height: 5.5rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary); box-shadow: 0 6px 20px rgba(123, 44, 191, 0.28); margin-bottom: 1rem;">
       <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--color-neutral-dark); margin-bottom: 0.35rem;">
         Acceso al Taller
       </h1>
@@ -150,3 +145,4 @@ require __DIR__ . '/../includes/header.php';
 </div>
 
 <?php require __DIR__ . '/../includes/footer.php'; ?>
+
