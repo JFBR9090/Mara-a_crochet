@@ -4,6 +4,8 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/admin_auth.php';
 
+header('Content-Type: text/html; charset=UTF-8');
+
 $baseUrl = getBaseUrl();
 
 // Si ya tiene sesión iniciada, redirigir al panel

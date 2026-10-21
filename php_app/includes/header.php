@@ -2,6 +2,8 @@
 // includes/header.php - Cabecera común y llamada a navegación
 require_once __DIR__ . '/functions.php';
 
+header('Content-Type: text/html; charset=UTF-8');
+
 $pageTitle = $pageTitle ?? 'Maraña Crochet | Amigurumis Cósmicos & Apego Artesanal';
 $pageDesc = $pageDesc ?? 'Amigurumis hechos a mano con hilo de algodón hipoalergénico. Ediciones limitadas con empaque aromático de lavanda y certificado de adopción.';
 $baseUrl = getBaseUrl();
