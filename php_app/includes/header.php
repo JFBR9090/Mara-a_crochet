@@ -20,9 +20,19 @@ $flash = getFlash();
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="<?= $baseUrl ?>/assets/img/favicon.png">
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('marana_theme') || '<?= !empty($_SESSION['customer_theme']) ? h($_SESSION['customer_theme']) : '' ?>';
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="<?= $baseUrl ?>/assets/css/style.css">
 </head>
-<body>
+<body data-theme-body>
 
 <?php require __DIR__ . '/navbar.php'; ?>
 

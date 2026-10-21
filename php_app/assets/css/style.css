@@ -65,6 +65,56 @@
   --transition-base: 220ms ease;
 }
 
+/* ==========================================================================
+   MODO OSCURO - PALETA ARTISANAL MIDNIGHT VIOLET
+   ========================================================================== */
+[data-theme="dark"] {
+  /* Morado primario adaptado para alto contraste en fondo oscuro */
+  --color-primary: #B55EFF;
+  --color-primary-hover: #C77DFF;
+  --color-primary-dark: #9D4EDD;
+  --color-primary-light: #E0AAFF;
+  --color-primary-subtle: rgba(181, 94, 255, 0.16);
+  --color-primary-border: rgba(181, 94, 255, 0.35);
+
+  /* Morado secundario */
+  --color-secondary: #C77DFF;
+  --color-secondary-hover: #E0AAFF;
+  --color-secondary-light: #F0DDFE;
+  --color-secondary-subtle: rgba(199, 125, 255, 0.14);
+  --color-secondary-border: rgba(199, 125, 255, 0.28);
+
+  /* Dorado terciario */
+  --color-accent: #FFC021;
+  --color-accent-hover: #FFAA00;
+  --color-accent-subtle: rgba(255, 192, 33, 0.16);
+  --color-accent-border: rgba(255, 192, 33, 0.35);
+
+  /* Fondos y textos oscuros de alta fidelidad */
+  --color-neutral-dark: #F5F3F8;
+  --color-neutral-medium: #C7BFCE;
+  --color-neutral-light: #948B9E;
+  --color-neutral-border: #2D233C;
+  --color-neutral-border-light: #20172D;
+  --color-neutral-bg: #0C0814;
+  --color-neutral-card: #150F22;
+
+  /* Estados Funcionales en modo oscuro */
+  --color-success: #34D399;
+  --color-success-bg: rgba(52, 211, 153, 0.15);
+  --color-warning: #FBBF24;
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-danger: #F87171;
+  --color-danger-bg: rgba(248, 113, 113, 0.15);
+  --color-info: #818CF8;
+  --color-info-bg: rgba(129, 140, 248, 0.15);
+
+  /* Sombras para modo oscuro */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.75);
+}
+
 /* --- RESET Y BASE --- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -75,6 +125,11 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
@@ -86,6 +141,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 a {
@@ -287,7 +343,7 @@ p {
   padding: 0.65rem 1rem 0.65rem 2.45rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-neutral-border);
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   color: var(--color-neutral-dark);
   transition: all var(--transition-fast);
   outline: none;
@@ -305,9 +361,10 @@ p {
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   border-bottom: 1px solid var(--color-neutral-border);
   box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 .nav-container {
   display: flex;
@@ -453,8 +510,9 @@ p {
 
 .hero-section {
   padding: 3.5rem 0 3rem;
-  background: linear-gradient(180deg, #FFFFFF 0%, var(--color-neutral-bg) 100%);
+  background: linear-gradient(180deg, var(--color-neutral-card) 0%, var(--color-neutral-bg) 100%);
   border-bottom: 1px solid var(--color-neutral-border);
+  transition: background var(--transition-base), border-color var(--transition-base);
 }
 .hero-grid {
   display: grid;
@@ -510,12 +568,13 @@ p {
 }
 
 .hero-card {
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   border: 1px solid var(--color-neutral-border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   position: relative;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 .hero-card-badge {
   position: absolute;
@@ -557,7 +616,7 @@ p {
   font-weight: 600;
   padding: 0.4rem 0.95rem;
   border-radius: var(--radius-full);
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   color: var(--color-neutral-medium);
   border: 1px solid var(--color-neutral-border);
   transition: all var(--transition-fast);
@@ -578,9 +637,10 @@ p {
   padding: 0.45rem 1rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-neutral-border);
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   color: var(--color-neutral-dark);
   outline: none;
+  transition: all var(--transition-fast);
 }
 .sort-select:focus {
   border-color: var(--color-primary);
@@ -594,13 +654,13 @@ p {
   margin-bottom: 4rem;
 }
 .product-card {
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   border: 1px solid var(--color-neutral-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-base);
   position: relative;
 }
 .product-card:hover {
@@ -656,7 +716,7 @@ p {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--color-neutral-card);
   border: 1px solid var(--color-neutral-border);
   display: flex;
   align-items: center;
@@ -666,7 +726,7 @@ p {
   transition: all var(--transition-fast);
 }
 .fav-btn:hover, .fav-btn.active {
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   color: #E11D48;
   border-color: #FECDD3;
 }
@@ -908,12 +968,12 @@ p {
   width: 100%;
   max-width: 400px;
   height: 100vh;
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   z-index: 101;
   display: flex;
   flex-direction: column;
-  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -4px 0 25px rgba(29, 17, 40, 0.1);
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color var(--transition-base);
+  box-shadow: -4px 0 25px rgba(0, 0, 0, 0.25);
 }
 .cart-drawer.open {
   right: 0;
@@ -934,6 +994,7 @@ p {
   padding: 1.25rem;
   border-top: 1px solid var(--color-neutral-border);
   background-color: var(--color-neutral-bg);
+  transition: background-color var(--transition-base);
 }
 
 .cart-item {
@@ -964,7 +1025,7 @@ p {
 }
 .toast-card {
   pointer-events: auto;
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   border: 1px solid var(--color-neutral-border);
   border-left: 4px solid var(--color-primary);
   border-radius: var(--radius-sm);
@@ -973,6 +1034,7 @@ p {
   min-width: 280px;
   max-width: 380px;
   animation: slideInRight 0.3s ease;
+  transition: background-color var(--transition-base);
 }
 .toast-card.success { border-left-color: var(--color-success); }
 .toast-card.error { border-left-color: var(--color-danger); }
@@ -994,10 +1056,11 @@ p {
 
 /* --- PIE DE PÁGINA --- */
 .site-footer {
-  background-color: #FFFFFF;
+  background-color: var(--color-neutral-card);
   border-top: 1px solid var(--color-neutral-border);
   padding: 3rem 0 2rem;
   margin-top: 4rem;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 .footer-grid {
   display: grid;
@@ -1094,7 +1157,7 @@ p {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(29, 17, 40, 0.6);
+  background: rgba(12, 8, 20, 0.65);
   backdrop-filter: blur(4px);
   z-index: 1050;
   opacity: 0;
@@ -1116,9 +1179,11 @@ p {
   max-width: 820px;
   max-height: 90vh;
   overflow-y: auto;
-  background: #ffffff;
+  background: var(--color-neutral-card);
+  color: var(--color-neutral-dark);
+  border: 1px solid var(--color-neutral-border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 45px rgba(29, 17, 40, 0.22);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
   z-index: 1060;
   opacity: 0;
   pointer-events: none;
@@ -1247,4 +1312,178 @@ p {
     display: none;
   }
 }
+
+/* ==========================================================================
+   SISTEMA DE MODO CLARO / OSCURO (THEME SWITCHER)
+   ========================================================================== */
+.theme-toggle-btn {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--color-neutral-border);
+  color: var(--color-neutral-medium);
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  padding: 0;
+  position: relative;
+}
+.theme-toggle-btn:hover {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  border-color: var(--color-primary-border);
+  transform: rotate(18deg) scale(1.05);
+}
+.theme-toggle-btn .theme-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Alternancia visual de iconos según el atributo data-theme en <html> */
+html:not([data-theme="dark"]) .theme-toggle-btn .sun-icon {
+  display: none !important;
+}
+html:not([data-theme="dark"]) .theme-toggle-btn .moon-icon {
+  display: block !important;
+}
+html[data-theme="dark"] .theme-toggle-btn .sun-icon {
+  display: block !important;
+  color: var(--color-accent);
+}
+html[data-theme="dark"] .theme-toggle-btn .moon-icon {
+  display: none !important;
+}
+
+/* ==========================================================================
+   COMPONENTES DE FORMULARIOS Y TARJETAS
+   ========================================================================== */
+.checkout-card {
+  background-color: var(--color-neutral-card);
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-neutral-dark);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.form-input, .form-select, .form-textarea {
+  background-color: var(--color-neutral-card);
+  color: var(--color-neutral-dark);
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  transition: all var(--transition-fast);
+  outline: none;
+  box-sizing: border-box;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
+}
+.form-input:disabled, .form-select:disabled {
+  background-color: var(--color-neutral-border-light);
+  color: var(--color-neutral-light);
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   SISTEMA DE AVATARES DE CLIENTES Y PERFIL
+   ========================================================================== */
+.nav-customer-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+.nav-avatar-img {
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--color-primary);
+  flex-shrink: 0;
+}
+
+.profile-header-card {
+  background: linear-gradient(135deg, var(--color-primary-subtle) 0%, var(--color-secondary-subtle) 100%);
+  border: 1px solid var(--color-primary-border);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: background var(--transition-base), border-color var(--transition-base);
+}
+
+.avatar-preset-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.avatar-preset-btn {
+  background: var(--color-neutral-card);
+  border: 1.5px solid var(--color-neutral-border);
+  border-radius: var(--radius-full);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  color: var(--color-neutral-dark);
+  transition: all var(--transition-fast);
+}
+.avatar-preset-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+.avatar-preset-btn.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.theme-radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.theme-radio-card {
+  border: 2px solid var(--color-neutral-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--color-neutral-card);
+  color: var(--color-neutral-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+.theme-radio-card:hover {
+  border-color: var(--color-primary);
+}
+.theme-radio-card.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+}
+
 

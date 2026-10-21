@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-// perfil.php - Perfil de Cliente e Historial de Pedidos en Maraña Crochet
+// perfil.php - Perfil de Cliente, Foto de Perfil, Tema y Pedidos en Maraña Crochet
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/functions.php';
 
@@ -17,20 +17,111 @@ $customerId = (int)$_SESSION['customer_id'];
 $successMsg = '';
 $errorMsg = '';
 
-// Procesar actualización de datos del cliente
+// Procesar acciones POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
-    if ($action === 'update_profile') {
+    // 1. SUBIR FOTO DE PERFIL PERSONALIZADA
+    if ($action === 'upload_avatar' && isset($_FILES['avatar_file'])) {
+        $file = $_FILES['avatar_file'];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $errorMsg = 'No se pudo subir la foto de perfil. Código de error: ' . $file['error'];
+        } elseif ($file['size'] > 5 * 1024 * 1024) {
+            $errorMsg = 'La foto es demasiado pesada. El tamaño máximo permitido es de 5 MB.';
+        } else {
+            $allowedMimes = [
+                'image/jpeg' => 'jpg',
+                'image/png'  => 'png',
+                'image/webp' => 'webp',
+                'image/gif'  => 'gif',
+            ];
+
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime = $finfo->file($file['tmp_name']);
+
+            if (!isset($allowedMimes[$mime])) {
+                $errorMsg = 'Formato de imagen no compatible. Por favor sube una imagen JPG, PNG o WEBP.';
+            } else {
+                $ext = $allowedMimes[$mime];
+                $newFilename = 'avatar_' . $customerId . '_' . time() . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+                
+                $uploadDir = __DIR__ . '/uploads/avatars';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+                $destPath = $uploadDir . '/' . $newFilename;
+
+                if (move_uploaded_file($file['tmp_name'], $destPath)) {
+                    // Replicar en htdocs para visualización inmediata en servidor local
+                    $xamppDir = 'C:/xampp/htdocs/marana/uploads/avatars';
+                    if (is_dir($xamppDir)) {
+                        @copy($destPath, $xamppDir . '/' . $newFilename);
+                    }
+
+                    $avatarDbPath = 'uploads/avatars/' . $newFilename;
+
+                    // Actualizar en base de datos
+                    $stmt = $pdo->prepare("UPDATE `customers` SET `avatar` = :avatar WHERE `id` = :id");
+                    $stmt->execute([':avatar' => $avatarDbPath, ':id' => $customerId]);
+
+                    $_SESSION['customer_avatar'] = $avatarDbPath;
+                    $successMsg = '¡Tu foto de perfil ha sido subida y guardada exitosamente! 📷✨';
+                } else {
+                    $errorMsg = 'Ocurrió un error al guardar el archivo en el servidor.';
+                }
+            }
+        }
+    }
+
+    // 2. ELEGIR AVATAR ARTESANAL PREESTABLECIDO
+    elseif ($action === 'preset_avatar') {
+        $preset = trim($_POST['preset'] ?? '');
+        $allowedPresets = ['preset:rana', 'preset:aranita', 'preset:murcielago', 'preset:pulpo', 'preset:ovillo', 'preset:abeja'];
+
+        if (in_array($preset, $allowedPresets, true)) {
+            $stmt = $pdo->prepare("UPDATE `customers` SET `avatar` = :avatar WHERE `id` = :id");
+            $stmt->execute([':avatar' => $preset, ':id' => $customerId]);
+
+            $_SESSION['customer_avatar'] = $preset;
+            $successMsg = '¡Avatar amigurumi seleccionado correctamente! 🧶✨';
+        } else {
+            $errorMsg = 'Avatar artesanal no reconocido.';
+        }
+    }
+
+    // 3. RESTABLECER O ELIMINAR AVATAR
+    elseif ($action === 'remove_avatar') {
+        $stmt = $pdo->prepare("UPDATE `customers` SET `avatar` = NULL WHERE `id` = :id");
+        $stmt->execute([':id' => $customerId]);
+
+        $_SESSION['customer_avatar'] = null;
+        $successMsg = '¡Tu foto de perfil se ha restablecido a tus iniciales tradicionales!';
+    }
+
+    // 4. GUARDAR PREFERENCIA DE MODO CLARO / OSCURO
+    elseif ($action === 'update_theme_preference') {
+        $theme = trim($_POST['theme_preference'] ?? 'light');
+        if (in_array($theme, ['light', 'dark'], true)) {
+            $stmt = $pdo->prepare("UPDATE `customers` SET `theme_preference` = :theme WHERE `id` = :id");
+            $stmt->execute([':theme' => $theme, ':id' => $customerId]);
+
+            $_SESSION['customer_theme'] = $theme;
+            $successMsg = '¡Preferencia de visualización guardada (' . ($theme === 'dark' ? 'Modo Oscuro 🌙' : 'Modo Claro ☀️') . ')!';
+        }
+    }
+
+    // 5. ACTUALIZAR INFORMACIÓN PERSONAL Y DE ENVÍO
+    elseif ($action === 'update_profile') {
         $name = trim($_POST['name'] ?? '');
         $phone = trim($_POST['phone'] ?? '');
         $address = trim($_POST['address'] ?? '');
         $city = trim($_POST['city'] ?? '');
-        $department = trim($_POST['department'] ?? '');
+        $department = trim($_POST['department'] ?? 'Huila');
         $newPassword = $_POST['new_password'] ?? '';
 
         if (empty($name) || empty($phone) || empty($address) || empty($city)) {
-            $errorMsg = 'Por favor completa todos los campos de información personal.';
+            $errorMsg = 'Por favor completa todos los campos de información personal y de entrega.';
         } else {
             if (!empty($newPassword)) {
                 if (strlen($newPassword) < 6) {
@@ -51,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ':pass' => $hash,
                         ':id' => $customerId
                     ]);
-                    $successMsg = '¡Tus datos y tu contraseña han sido actualizados con éxito!';
+                    $successMsg = '¡Tus datos de entrega y tu contraseña han sido actualizados con éxito!';
                 }
             } else {
                 $stmt = $pdo->prepare("
@@ -67,11 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':department' => $department,
                     ':id' => $customerId
                 ]);
-                $successMsg = '¡Tus datos de entrega han sido actualizados con éxito!';
+                $successMsg = '¡Tus datos de entrega en Colombia han sido actualizados con éxito!';
             }
 
             if (empty($errorMsg)) {
-                // Actualizar sesión
                 $_SESSION['customer_name'] = $name;
                 $_SESSION['customer_phone'] = $phone;
                 $_SESSION['customer_address'] = $address;
@@ -82,10 +172,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Obtener datos frescos del cliente
+// Obtener datos frescos del cliente desde la base de datos
 $custStmt = $pdo->prepare("SELECT * FROM `customers` WHERE `id` = :id LIMIT 1");
 $custStmt->execute([':id' => $customerId]);
 $customer = $custStmt->fetch();
+
+// Sincronizar sesión con datos de DB
+$_SESSION['customer_avatar'] = $customer['avatar'] ?? null;
+$_SESSION['customer_theme'] = $customer['theme_preference'] ?? 'light';
 
 // Obtener historial de pedidos asociados por customerId o por correo
 $ordersStmt = $pdo->prepare("
@@ -100,23 +194,38 @@ $ordersStmt->execute([
 $customerOrders = $ordersStmt->fetchAll();
 
 $pageTitle = 'Mi Perfil & Historial de Pedidos | Maraña Crochet';
-$pageDesc = 'Consulta tus amigurumis adoptados, certificados de nacimiento y actualiza tus datos de envío en Colombia.';
+$pageDesc = 'Personaliza tu foto de perfil, elige el modo claro u oscuro y consulta el estado de tus amigurumis adoptados en Colombia.';
 require __DIR__ . '/includes/header.php';
 ?>
 
-<div class="container" style="max-width: 1040px; margin: 3rem auto 6rem; padding: 0 1rem;">
+<div class="container" style="max-width: 1060px; margin: 3rem auto 6rem; padding: 0 1rem;">
 
-  <!-- Header de Perfil -->
-  <div style="background: linear-gradient(135deg, #fbf7ff 0%, #f3ebfc 100%); border: 1px solid var(--color-primary-light); border-radius: 1.25rem; padding: 2rem; margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; box-shadow: 0 4px 20px rgba(123,44,191,0.06);">
-    <div style="display: flex; align-items: center; gap: 1.25rem;">
-      <div style="width: 4.5rem; height: 4.5rem; border-radius: 50%; background: var(--color-primary); color: #fff; font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(123,44,191,0.3); border: 3px solid #fff;">
-        <?= strtoupper(substr($customer['name'], 0, 1)) ?>
+  <!-- Header de Perfil con Foto de Perfil & Acciones -->
+  <div class="profile-header-card">
+    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+      <!-- Avatar con indicador -->
+      <div style="position: relative; display: inline-block;">
+        <?= renderCustomerAvatarHtml($customer['avatar'] ?? null, $customer['name'], 'lg', 'profile-main-avatar') ?>
+        <button 
+          type="button" 
+          onclick="toggleAvatarPanel()" 
+          title="Cambiar Foto o Avatar"
+          style="position: absolute; bottom: 0; right: 0; background: var(--color-primary); color: #fff; border: 2px solid var(--color-neutral-card); border-radius: 50%; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"
+        >
+          📷
+        </button>
       </div>
+
       <div>
-        <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--color-neutral-dark); margin: 0 0 0.25rem 0;">
-          <?= h($customer['name']) ?>
-        </h1>
-        <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--color-neutral-medium); flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+          <h1 style="font-size: 1.65rem; font-weight: 800; color: var(--color-neutral-dark); margin: 0;">
+            <?= h($customer['name']) ?>
+          </h1>
+          <span style="font-size: 0.72rem; font-weight: 700; background: var(--color-primary-subtle); color: var(--color-primary); padding: 0.2rem 0.6rem; border-radius: var(--radius-full); border: 1px solid var(--color-primary-border);">
+            🧶 Miembro Maraña
+          </span>
+        </div>
+        <div style="display: flex; gap: 1.25rem; font-size: 0.85rem; color: var(--color-neutral-medium); margin-top: 0.35rem; flex-wrap: wrap;">
           <span>✉️ <?= h($customer['email']) ?></span>
           <span>📱 <?= h($customer['phone']) ?></span>
           <span>📍 <?= h($customer['city']) ?>, <?= h($customer['department'] ?? 'Colombia') ?></span>
@@ -124,30 +233,153 @@ require __DIR__ . '/includes/header.php';
       </div>
     </div>
 
-    <div style="display: flex; gap: 0.75rem;">
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      <button type="button" onclick="toggleAvatarPanel()" class="btn btn-outlined btn-sm">
+        📸 Cambiar Foto
+      </button>
       <a href="<?= $baseUrl ?>/index.php#catalogo" class="btn btn-primary btn-sm">
         🧶 Explorar Catálogo
       </a>
-      <a href="<?= $baseUrl ?>/logout_customer.php" class="btn btn-outlined btn-sm" style="color: #b71c1c; border-color: #ffcccc;">
+      <a href="<?= $baseUrl ?>/logout_customer.php" class="btn btn-outlined btn-sm" style="color: #e53e3e; border-color: rgba(229, 62, 62, 0.3);">
         Cerrar Sesión
       </a>
     </div>
   </div>
 
+  <!-- Panel Desplegable: Personalización de Foto de Perfil & Avatares Amigurumi -->
+  <div id="avatar-customizer-panel" class="checkout-card" style="display: none; padding: 1.75rem; border-radius: 1.25rem; margin-bottom: 2.5rem; animation: slideInDown 0.3s ease;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+      <div>
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-neutral-dark); margin: 0;">
+          🖼️ Personalizar Foto de Perfil
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--color-neutral-medium); margin-top: 0.25rem;">
+          Puedes subir una foto propia o elegir un simpático avatar temático de nuestras criaturas de crochet.
+        </p>
+      </div>
+      <button type="button" onclick="toggleAvatarPanel()" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--color-neutral-medium);">&times;</button>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: flex-start;">
+      
+      <!-- Opción A: Subir Foto Propia -->
+      <div style="background: var(--color-neutral-bg); padding: 1.25rem; border-radius: var(--radius-md); border: 1px dashed var(--color-primary-border);">
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--color-neutral-dark); margin-bottom: 0.5rem;">
+          Subir Foto desde tu Equipo
+        </h4>
+        <form action="perfil.php" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 0.85rem;">
+          <input type="hidden" name="action" value="upload_avatar">
+          
+          <input 
+            type="file" 
+            name="avatar_file" 
+            id="avatar_file_input" 
+            accept="image/png, image/jpeg, image/webp, image/gif"
+            required 
+            class="form-input" 
+            style="width: 100%; font-size: 0.8rem; padding: 0.5rem;"
+            onchange="previewAvatarImage(this)"
+          >
+          
+          <div id="avatar-preview-container" style="display: none; align-items: center; gap: 0.75rem; margin-top: 0.25rem;">
+            <img id="avatar-preview-img" src="" alt="Vista previa" style="width: 3.5rem; height: 3.5rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-primary);">
+            <span style="font-size: 0.78rem; color: var(--color-neutral-medium);">Vista previa lista para guardar</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-sm" style="justify-content: center;">
+            ✓ Guardar Foto de Perfil
+          </button>
+        </form>
+      </div>
+
+      <!-- Opción B: Avatares Artesanales Temáticos -->
+      <div>
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--color-neutral-dark); margin-bottom: 0.25rem;">
+          O elige un Amigurumi Coleccionable:
+        </h4>
+        <p style="font-size: 0.78rem; color: var(--color-neutral-medium); margin-bottom: 0.85rem;">
+          Haz clic en cualquiera para ponértelo de avatar de inmediato.
+        </p>
+
+        <div class="avatar-preset-picker">
+          <form action="perfil.php" method="POST" style="display: inline;">
+            <input type="hidden" name="action" value="preset_avatar">
+            <input type="hidden" name="preset" value="preset:rana">
+            <button type="submit" class="avatar-preset-btn <?= ($customer['avatar'] === 'preset:rana') ? 'active' : '' ?>">
+              🐸 Ranita Cósmica
+            </button>
+          </form>
+
+          <form action="perfil.php" method="POST" style="display: inline;">
+            <input type="hidden" name="action" value="preset_avatar">
+            <input type="hidden" name="preset" value="preset:aranita">
+            <button type="submit" class="avatar-preset-btn <?= ($customer['avatar'] === 'preset:aranita') ? 'active' : '' ?>">
+              🕷️ Lulu Arañita
+            </button>
+          </form>
+
+          <form action="perfil.php" method="POST" style="display: inline;">
+            <input type="hidden" name="action" value="preset_avatar">
+            <input type="hidden" name="preset" value="preset:murcielago">
+            <button type="submit" class="avatar-preset-btn <?= ($customer['avatar'] === 'preset:murcielago') ? 'active' : '' ?>">
+              🦇 Murciélago Lunar
+            </button>
+          </form>
+
+          <form action="perfil.php" method="POST" style="display: inline;">
+            <input type="hidden" name="action" value="preset_avatar">
+            <input type="hidden" name="preset" value="preset:pulpo">
+            <button type="submit" class="avatar-preset-btn <?= ($customer['avatar'] === 'preset:pulpo') ? 'active' : '' ?>">
+              🐙 Pulpo de Apego
+            </button>
+          </form>
+
+          <form action="perfil.php" method="POST" style="display: inline;">
+            <input type="hidden" name="action" value="preset_avatar">
+            <input type="hidden" name="preset" value="preset:ovillo">
+            <button type="submit" class="avatar-preset-btn <?= ($customer['avatar'] === 'preset:ovillo') ? 'active' : '' ?>">
+              🧶 Ovillo Mágico
+            </button>
+          </form>
+
+          <form action="perfil.php" method="POST" style="display: inline;">
+            <input type="hidden" name="action" value="preset_avatar">
+            <input type="hidden" name="preset" value="preset:abeja">
+            <button type="submit" class="avatar-preset-btn <?= ($customer['avatar'] === 'preset:abeja') ? 'active' : '' ?>">
+              🐝 Abejita Silvestre
+            </button>
+          </form>
+        </div>
+
+        <?php if (!empty($customer['avatar'])): ?>
+          <div style="margin-top: 1.25rem; border-top: 1px dashed var(--color-neutral-border); padding-top: 0.85rem;">
+            <form action="perfil.php" method="POST">
+              <input type="hidden" name="action" value="remove_avatar">
+              <button type="submit" class="btn btn-outlined btn-sm" style="font-size: 0.75rem; color: var(--color-neutral-medium);">
+                ↺ Quitar imagen y usar mis iniciales
+              </button>
+            </form>
+          </div>
+        <?php endif; ?>
+      </div>
+
+    </div>
+  </div>
+
   <?php if (!empty($successMsg)): ?>
-    <div style="background: #f0fff4; border-left: 4px solid #38a169; color: #22543d; padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 2rem; font-size: 0.9rem; font-weight: 600;">
+    <div style="background: var(--color-success-bg); border-left: 4px solid var(--color-success); color: var(--color-neutral-dark); padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 2rem; font-size: 0.9rem; font-weight: 600;">
       ✓ <?= h($successMsg) ?>
     </div>
   <?php endif; ?>
 
   <?php if (!empty($errorMsg)): ?>
-    <div style="background: #fff0f0; border-left: 4px solid #e63946; color: #b71c1c; padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 2rem; font-size: 0.9rem; font-weight: 600;">
+    <div style="background: var(--color-danger-bg); border-left: 4px solid var(--color-danger); color: var(--color-neutral-dark); padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 2rem; font-size: 0.9rem; font-weight: 600;">
       ⚠ <?= h($errorMsg) ?>
     </div>
   <?php endif; ?>
 
-  <!-- Grid de Contenido: Historial de Pedidos (Columna Principal) y Datos de Envío (Columna Lateral) -->
-  <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: flex-start;">
+  <!-- Grid de Contenido Principal: Historial de Pedidos (Columna Izq) y Configuración / Envío (Columna Der) -->
+  <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 2rem; align-items: flex-start;">
 
     <!-- COLUMNA 1: HISTORIAL DE PEDIDOS -->
     <div>
@@ -175,14 +407,14 @@ require __DIR__ . '/includes/header.php';
               $items = json_decode($order['items'] ?? '[]', true) ?: [];
               $status = strtolower($order['status'] ?? 'revision');
               $statusMap = [
-                  'revision' => ['label' => 'En Verificación', 'bg' => '#fff3cd', 'color' => '#856404'],
-                  'preparando' => ['label' => 'En Tejido / Empaque', 'bg' => '#e2e3e5', 'color' => '#383d41'],
-                  'despachado' => ['label' => 'En Camino (Guía Activa)', 'bg' => '#cce5ff', 'color' => '#004085'],
-                  'entregado' => ['label' => 'Entregado & Adoptado', 'bg' => '#d4edda', 'color' => '#155724']
+                  'revision' => ['label' => 'En Verificación', 'bg' => 'var(--color-warning-bg)', 'color' => 'var(--color-warning)'],
+                  'preparando' => ['label' => 'En Tejido / Empaque', 'bg' => 'var(--color-primary-subtle)', 'color' => 'var(--color-primary)'],
+                  'despachado' => ['label' => 'En Camino (Guía Activa)', 'bg' => 'var(--color-info-bg)', 'color' => 'var(--color-info)'],
+                  'entregado' => ['label' => 'Entregado & Adoptado', 'bg' => 'var(--color-success-bg)', 'color' => 'var(--color-success)']
               ];
-              $stInfo = $statusMap[$status] ?? ['label' => ucfirst($status), 'bg' => '#f8f9fa', 'color' => '#333'];
+              $stInfo = $statusMap[$status] ?? ['label' => ucfirst($status), 'bg' => 'var(--color-neutral-bg)', 'color' => 'var(--color-neutral-medium)'];
             ?>
-            <div class="checkout-card" style="padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--color-neutral-border);">
+            <div class="checkout-card" style="padding: 1.5rem; border-radius: 1rem;">
               
               <!-- Encabezado de la Orden -->
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-neutral-border); padding-bottom: 0.85rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -208,7 +440,7 @@ require __DIR__ . '/includes/header.php';
                     <?php if (!empty($item['image'])): ?>
                       <img src="<?= h($item['image']) ?>" alt="<?= h($item['productName'] ?? $item['name'] ?? '') ?>" style="width: 2.8rem; height: 2.8rem; border-radius: 0.5rem; object-fit: cover; border: 1px solid var(--color-neutral-border);">
                     <?php else: ?>
-                      <div style="width: 2.8rem; height: 2.8rem; border-radius: 0.5rem; background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🧶</div>
+                      <div style="width: 2.8rem; height: 2.8rem; border-radius: 0.5rem; background: var(--color-primary-subtle); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🧶</div>
                     <?php endif; ?>
                     <div style="flex: 1;">
                       <div style="font-weight: 700; font-size: 0.88rem; color: var(--color-neutral-dark);">
@@ -263,14 +495,45 @@ require __DIR__ . '/includes/header.php';
       <?php endif; ?>
     </div>
 
-    <!-- COLUMNA 2: MIS DATOS DE ENVÍO Y PERFIL -->
-    <div>
-      <div class="checkout-card" style="padding: 1.75rem; border-radius: 1rem; position: sticky; top: 5.5rem;">
+    <!-- COLUMNA 2: PREFERENCIAS DE TEMA Y DATOS DE ENTREGA -->
+    <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+      
+      <!-- WIDGET: PREFERENCIAS DE TEMA (CLARO / OSCURO) -->
+      <div class="checkout-card" style="padding: 1.5rem; border-radius: 1rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--color-neutral-dark); margin-bottom: 0.25rem;">
+          🎨 Modo de Visualización
+        </h3>
+        <p style="font-size: 0.8rem; color: var(--color-neutral-medium); margin-bottom: 1rem;">
+          Elige entre el ambiente artesanal lila & crema o el modo noche cósmico.
+        </p>
+
+        <?php $currentTheme = $customer['theme_preference'] ?? 'light'; ?>
+        <div class="theme-radio-group">
+          <div class="theme-radio-card <?= ($currentTheme === 'light') ? 'active' : '' ?>" data-theme-val="light">
+            <span style="font-size: 1.3rem;">☀️</span>
+            <div>
+              <div style="line-height: 1.2;">Modo Claro</div>
+              <span style="font-size: 0.72rem; color: var(--color-neutral-light); font-weight: 400;">Lila & Crema</span>
+            </div>
+          </div>
+
+          <div class="theme-radio-card <?= ($currentTheme === 'dark') ? 'active' : '' ?>" data-theme-val="dark">
+            <span style="font-size: 1.3rem;">🌙</span>
+            <div>
+              <div style="line-height: 1.2;">Modo Oscuro</div>
+              <span style="font-size: 0.72rem; color: var(--color-neutral-light); font-weight: 400;">Noche Cósmica</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULARIO: MIS DATOS DE ENTREGA -->
+      <div class="checkout-card" style="padding: 1.75rem; border-radius: 1rem;">
         <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--color-neutral-dark); margin-bottom: 0.35rem;">
           ⚙️ Mis Datos de Entrega
         </h3>
         <p style="font-size: 0.8rem; color: var(--color-neutral-medium); margin-bottom: 1.25rem;">
-          Estos datos se autocompletarán de forma segura en tus futuros checkouts para agilizar tus compras.
+          Estos datos se autocompletarán de forma segura en tus futuros checkouts para agilizar tus compras en Colombia.
         </p>
 
         <form action="perfil.php" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
@@ -283,7 +546,7 @@ require __DIR__ . '/includes/header.php';
 
           <div>
             <label style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--color-neutral-dark); margin-bottom: 0.25rem;">Correo Electrónico (No modificable)</label>
-            <input type="email" disabled class="form-input" style="width: 100%; background: #f3f4f6; color: #6b7280; cursor: not-allowed;" value="<?= h($customer['email']) ?>">
+            <input type="email" disabled class="form-input" style="width: 100%;" value="<?= h($customer['email']) ?>">
           </div>
 
           <div>
@@ -334,5 +597,30 @@ require __DIR__ . '/includes/header.php';
   </div>
 
 </div>
+
+<script>
+  function toggleAvatarPanel() {
+    const p = document.getElementById('avatar-customizer-panel');
+    if (p) {
+      p.style.display = (p.style.display === 'none' || p.style.display === '') ? 'block' : 'none';
+      if (p.style.display === 'block') {
+        p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
+
+  function previewAvatarImage(input) {
+    const previewContainer = document.getElementById('avatar-preview-container');
+    const previewImg = document.getElementById('avatar-preview-img');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewContainer.style.display = 'flex';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

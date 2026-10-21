@@ -177,6 +177,8 @@ function getCustomer(): ?array {
         'address' => $_SESSION['customer_address'] ?? '',
         'city' => $_SESSION['customer_city'] ?? '',
         'department' => $_SESSION['customer_department'] ?? 'Cundinamarca',
+        'avatar' => $_SESSION['customer_avatar'] ?? null,
+        'theme_preference' => $_SESSION['customer_theme'] ?? 'light',
     ];
 }
 
@@ -188,6 +190,8 @@ function loginCustomer(array $customer): void {
     $_SESSION['customer_address'] = $customer['address'] ?? '';
     $_SESSION['customer_city'] = $customer['city'] ?? '';
     $_SESSION['customer_department'] = $customer['department'] ?? 'Cundinamarca';
+    $_SESSION['customer_avatar'] = $customer['avatar'] ?? null;
+    $_SESSION['customer_theme'] = $customer['theme_preference'] ?? 'light';
 }
 
 function logoutCustomer(): void {
@@ -198,8 +202,59 @@ function logoutCustomer(): void {
         $_SESSION['customer_phone'],
         $_SESSION['customer_address'],
         $_SESSION['customer_city'],
-        $_SESSION['customer_department']
+        $_SESSION['customer_department'],
+        $_SESSION['customer_avatar'],
+        $_SESSION['customer_theme']
     );
 }
+
+/**
+ * Renderiza el Avatar de un cliente (Foto personalizada, Preset amigurumi o Iniciales)
+ */
+function renderCustomerAvatarHtml(?string $avatar, string $name, string $size = 'md', string $extraClass = ''): string {
+    $baseUrl = getBaseUrl();
+    $initial = mb_strtoupper(mb_substr(trim($name ?: 'M'), 0, 1));
+    
+    // Dimensiones según tamaño
+    $dim = match ($size) {
+        'sm' => 'width: 1.85rem; height: 1.85rem; font-size: 0.85rem;',
+        'md' => 'width: 2.75rem; height: 2.75rem; font-size: 1.25rem;',
+        'lg' => 'width: 4.5rem; height: 4.5rem; font-size: 1.8rem;',
+        'xl' => 'width: 6.5rem; height: 6.5rem; font-size: 2.5rem;',
+        default => 'width: 2.5rem; height: 2.5rem; font-size: 1rem;'
+    };
+
+    $presets = [
+        'preset:rana' => ['emoji' => '🐸', 'bg' => '#E8F5E9', 'name' => 'Ranita Cósmica'],
+        'preset:aranita' => ['emoji' => '🕷️', 'bg' => '#F3E5F5', 'name' => 'Lulu Arañita'],
+        'preset:murcielago' => ['emoji' => '🦇', 'bg' => '#EDE7F6', 'name' => 'Murciélago Lunar'],
+        'preset:pulpo' => ['emoji' => '🐙', 'bg' => '#E0F7FA', 'name' => 'Pulpo de Apego'],
+        'preset:ovillo' => ['emoji' => '🧶', 'bg' => '#FFF3E0', 'name' => 'Ovillo Mágico'],
+        'preset:abeja' => ['emoji' => '🐝', 'bg' => '#FFFDE7', 'name' => 'Abejita Silvestre'],
+    ];
+
+    // Caso 1: Preset artesanal de crochet
+    if ($avatar && isset($presets[$avatar])) {
+        $preset = $presets[$avatar];
+        return '<div class="customer-avatar-preset ' . h($extraClass) . '" style="' . $dim . ' border-radius: 50%; background: ' . $preset['bg'] . '; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12); border: 2px solid var(--color-primary-light); user-select: none;" title="' . h($preset['name']) . '">'
+            . '<span style="line-height: 1;">' . $preset['emoji'] . '</span>'
+            . '</div>';
+    }
+
+    // Caso 2: Imagen personalizada subida
+    if ($avatar && !str_starts_with($avatar, 'preset:')) {
+        $imgUrl = str_starts_with($avatar, 'http') ? $avatar : $baseUrl . '/' . ltrim($avatar, '/');
+        return '<div class="customer-avatar-wrapper ' . h($extraClass) . '" style="' . $dim . ' border-radius: 50%; position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; border: 2.5px solid var(--color-primary); box-shadow: 0 4px 12px rgba(123,44,191,0.25); flex-shrink: 0; background: var(--color-neutral-bg);">'
+            . '<img src="' . h($imgUrl) . '" alt="' . h($name) . '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">'
+            . '<div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--color-primary); color: #fff; font-weight: 800;">' . h($initial) . '</div>'
+            . '</div>';
+    }
+
+    // Caso 3: Fallback a Iniciales estilizadas
+    return '<div class="customer-avatar-initial ' . h($extraClass) . '" style="' . $dim . ' border-radius: 50%; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: #ffffff; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(123,44,191,0.25); border: 2px solid #ffffff; flex-shrink: 0; user-select: none;">'
+        . h($initial)
+        . '</div>';
+}
+
 
 

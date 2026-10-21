@@ -397,6 +397,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // 5. Manejo del Tema Claro / Oscuro (Dark Mode Engine)
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+
+  function applyTheme(theme, saveToDb = true) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem('marana_theme', theme);
+    } catch (e) {}
+
+    // Actualizar botón accesible
+    if (themeToggleBtn) {
+      const isDark = theme === 'dark';
+      themeToggleBtn.setAttribute('title', isDark ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro');
+      themeToggleBtn.setAttribute('aria-label', isDark ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro');
+    }
+
+    // Actualizar tarjetas de tema en perfil si existen
+    document.querySelectorAll('.theme-radio-card').forEach(card => {
+      const cardTheme = card.getAttribute('data-theme-val');
+      if (cardTheme === theme) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+
+    // Guardar en sesión / base de datos si procede
+    if (saveToDb) {
+      fetch(`${baseUrl}/api/save_theme.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ theme })
+      }).catch(() => {});
+    }
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme, true);
+      showToast(
+        newTheme === 'dark' ? 'Modo Oscuro activado 🌙' : 'Modo Claro activado ☀️',
+        newTheme === 'dark' ? 'Ambiente cósmico nocturno activado.' : 'Ambiente artesanal lila & crema activado.',
+        'info'
+      );
+    });
+  }
+
+  // Interacción en perfil.php para selección de tema
+  document.querySelectorAll('.theme-radio-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const targetTheme = card.getAttribute('data-theme-val');
+      if (targetTheme) {
+        applyTheme(targetTheme, true);
+        showToast('Preferencia guardada', `Has cambiado a ${targetTheme === 'dark' ? 'Modo Oscuro 🌙' : 'Modo Claro ☀️'}`, 'success');
+      }
+    });
+  });
+
   // Tecla Escape cierra modales
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -405,3 +465,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+

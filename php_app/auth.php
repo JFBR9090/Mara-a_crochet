@@ -107,6 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'address' => $address,
                     'city' => $city,
                     'department' => $department,
+                    'avatar' => null,
+                    'theme_preference' => 'light',
                 ];
 
                 loginCustomer($newCustomer);
