@@ -150,6 +150,12 @@ require __DIR__ . '/includes/header.php';
               Continuar al Checkout Seguro &rarr;
             </a>
 
+            <?php if (!isCustomerLoggedIn()): ?>
+              <div style="font-size: 0.78rem; color: var(--color-primary); background: var(--color-primary-subtle); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); margin-top: 0.75rem; text-align: center; font-weight: 600; border: 1px solid var(--color-primary-border);">
+                🔒 <strong>Acceso requerido:</strong> Si ingresaste como invitado, el sistema te solicitará iniciar sesión o registrarte para completar tu compra.
+              </div>
+            <?php endif; ?>
+
             <div style="margin-top: 1rem; text-align: center; font-size: 0.75rem; color: var(--color-neutral-light);">
               🔒 Pago seguro directo vía Bancolombia, Nequi, Daviplata o Davivienda con Comprobante Oficial.
             </div>

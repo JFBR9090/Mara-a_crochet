@@ -18,11 +18,27 @@ if (empty($cartItems)) {
     exit();
 }
 
+// REQUISITO ESTRICTO: Si ingresó como invitado, es OBLIGATORIO iniciar sesión o registrarse para comprar
+if (!isCustomerLoggedIn()) {
+    setFlash(
+        'info',
+        '¡Inicio de sesión obligatorio para comprar! 🧶✨',
+        'Para completar la adopción de tus amigurumis y emitir tu Certificado Oficial con seguimiento en Colombia, debes iniciar sesión o crear tu cuenta.'
+    );
+    header('Location: ' . $baseUrl . '/auth.php?redirect=' . urlencode($baseUrl . '/checkout.php') . '&reason=buy_required');
+    exit();
+}
+
 $error = '';
 $paymentMethods = getPaymentMethodsConfig();
 
 // Procesar Confirmación de Pedido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isCustomerLoggedIn()) {
+        setFlash('error', 'Sesión obligatoria', 'Debes iniciar sesión o registrarte para completar tu compra.');
+        header('Location: ' . $baseUrl . '/auth.php?redirect=' . urlencode($baseUrl . '/checkout.php') . '&reason=buy_required');
+        exit();
+    }
     $customerName   = trim($_POST['customerName'] ?? '');
     $customerEmail  = trim($_POST['customerEmail'] ?? '');
     $customerPhone  = trim($_POST['customerPhone'] ?? '');

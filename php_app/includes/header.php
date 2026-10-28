@@ -1,6 +1,7 @@
 <?php
 // includes/header.php - Cabecera común y llamada a navegación
 require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/admin_auth.php';
 
 header('Content-Type: text/html; charset=UTF-8');
 
@@ -32,7 +33,7 @@ $flash = getFlash();
   </script>
   <link rel="stylesheet" href="<?= $baseUrl ?>/assets/css/style.css">
 </head>
-<body data-theme-body>
+<body data-theme-body data-customer-logged="<?= isCustomerLoggedIn() ? '1' : '0' ?>" data-admin-logged="<?= isAdminLoggedIn() ? '1' : '0' ?>">
 
 <?php require __DIR__ . '/navbar.php'; ?>
 

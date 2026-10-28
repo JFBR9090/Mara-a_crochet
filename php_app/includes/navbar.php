@@ -67,7 +67,7 @@ $isAdmin = isAdminLoggedIn();
           <span class="nav-link-text">Hola, <?= h(explode(' ', $cust['name'])[0]) ?></span>
         </a>
       <?php else: ?>
-        <a href="<?= $baseUrl ?>/auth.php" class="nav-link-btn <?= ($currentScript === 'auth.php') ? 'active' : '' ?>" title="Iniciar Sesión o Registrarse">
+        <a href="<?= $baseUrl ?>/auth.php" class="nav-link-btn <?= ($currentScript === 'auth.php') ? 'active' : '' ?>" onclick="if (window.openAuthModal) { window.openAuthModal('user', 'login'); return false; }" title="Iniciar Sesión o Registrarse" id="nav-auth-modal-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -95,7 +95,7 @@ $isAdmin = isAdminLoggedIn();
       </button>
 
       <!-- Backoffice Taller (Admin) -->
-      <a href="<?= $baseUrl ?>/admin/orders.php" class="nav-link-btn <?= (str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/')) ? 'active' : '' ?>" title="Panel del Taller / Administración">
+      <a href="<?= $baseUrl ?>/admin/orders.php" class="nav-link-btn <?= (str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/')) ? 'active' : '' ?>" <?= !$isAdmin ? 'onclick="if (window.openAuthModal) { window.openAuthModal(\'admin\'); return false; }"' : '' ?> title="Panel del Taller / Administración" id="nav-admin-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>

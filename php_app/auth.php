@@ -6,12 +6,20 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/functions.php';
 
 $baseUrl = getBaseUrl();
-$redirect = trim($_GET['redirect'] ?? '');
-if (empty($redirect) || str_contains($redirect, 'http')) {
-    $redirect = $baseUrl . '/perfil.php';
+$rawRedirect = trim($_POST['redirect'] ?? $_GET['redirect'] ?? '');
+$redirect = $baseUrl . '/perfil.php';
+
+if (!empty($rawRedirect)) {
+    if (str_starts_with($rawRedirect, '/') && !str_starts_with($rawRedirect, '//')) {
+        $redirect = $rawRedirect;
+    } elseif (str_starts_with($rawRedirect, $baseUrl)) {
+        $redirect = $rawRedirect;
+    }
 }
 
-// Si ya tiene sesión iniciada, redirigir a perfil
+$reason = trim($_GET['reason'] ?? $_POST['reason'] ?? '');
+
+// Si ya tiene sesión iniciada, redirigir al destino solicitado
 if (isCustomerLoggedIn()) {
     header('Location: ' . $redirect);
     exit();
@@ -141,21 +149,42 @@ require __DIR__ . '/includes/header.php';
     </div>
   <?php endif; ?>
 
+  <?php if ($reason === 'buy_required'): ?>
+    <div style="background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%); border: 1.5px solid var(--color-primary-border); border-left: 5px solid var(--color-primary); padding: 1.25rem 1.45rem; border-radius: var(--radius-md); margin-bottom: 1.75rem; box-shadow: 0 4px 15px rgba(123,44,191,0.08);">
+      <div style="display: flex; gap: 0.95rem; align-items: flex-start;">
+        <span style="font-size: 2rem; line-height: 1;">🧶</span>
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--color-neutral-dark); margin: 0 0 0.35rem;">
+            ¡Paso Obligatorio para Completar tu Compra!
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--color-neutral-medium); margin: 0; line-height: 1.45;">
+            Has ingresado como invitado y seleccionado amigurumis. Para finalizar tu compra en Maraña Crochet es <strong>obligatorio iniciar sesión o registrarte</strong>. Así podremos asignarte tu <strong>Certificado Oficial de Adopción numerado</strong> y despachar tu pedido a tu dirección en Colombia.
+          </p>
+          <div style="margin-top: 0.5rem; font-size: 0.82rem; font-weight: 700; color: var(--color-primary);">
+            ✓ Tu canasta de compras quedará intacta y pasarás directo al pago tras ingresar.
+          </div>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+
   <div class="checkout-card" style="padding: 2rem; border-radius: 1.25rem;">
     <!-- Selector de Pestañas -->
     <div style="display: flex; gap: 0.5rem; background: var(--color-neutral-bg); padding: 0.35rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
-      <a href="?tab=login&redirect=<?= urlencode($redirect) ?>" style="flex: 1; text-align: center; padding: 0.65rem 1rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: all 0.2s; <?= $tab === 'login' ? 'background: #fff; color: var(--color-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);' : 'color: var(--color-neutral-medium);' ?>">
+      <a href="?tab=login&redirect=<?= urlencode($redirect) ?>&reason=<?= urlencode($reason) ?>" style="flex: 1; text-align: center; padding: 0.65rem 1rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: all 0.2s; <?= $tab === 'login' ? 'background: #fff; color: var(--color-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);' : 'color: var(--color-neutral-medium);' ?>">
         Iniciar Sesión
       </a>
-      <a href="?tab=register&redirect=<?= urlencode($redirect) ?>" style="flex: 1; text-align: center; padding: 0.65rem 1rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: all 0.2s; <?= $tab === 'register' ? 'background: #fff; color: var(--color-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);' : 'color: var(--color-neutral-medium);' ?>">
+      <a href="?tab=register&redirect=<?= urlencode($redirect) ?>&reason=<?= urlencode($reason) ?>" style="flex: 1; text-align: center; padding: 0.65rem 1rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: all 0.2s; <?= $tab === 'register' ? 'background: #fff; color: var(--color-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);' : 'color: var(--color-neutral-medium);' ?>">
         Crear Cuenta Nueva
       </a>
     </div>
 
     <!-- PESTAÑA 1: INICIAR SESIÓN -->
     <?php if ($tab === 'login'): ?>
-      <form action="auth.php?tab=login&redirect=<?= urlencode($redirect) ?>" method="POST" style="display: flex; flex-direction: column; gap: 1.25rem;">
+      <form action="auth.php?tab=login" method="POST" style="display: flex; flex-direction: column; gap: 1.25rem;">
         <input type="hidden" name="action" value="login">
+        <input type="hidden" name="redirect" value="<?= h($redirect) ?>">
+        <input type="hidden" name="reason" value="<?= h($reason) ?>">
 
         <div>
           <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--color-neutral-dark); margin-bottom: 0.35rem;">Correo Electrónico *</label>
@@ -176,14 +205,16 @@ require __DIR__ . '/includes/header.php';
 
         <div style="text-align: center; font-size: 0.85rem; color: var(--color-neutral-medium); margin-top: 0.5rem;">
           ¿No tienes una cuenta aún? 
-          <a href="?tab=register&redirect=<?= urlencode($redirect) ?>" style="color: var(--color-primary); font-weight: 700; text-decoration: none;">Regístrate aquí</a>
+          <a href="?tab=register&redirect=<?= urlencode($redirect) ?>&reason=<?= urlencode($reason) ?>" style="color: var(--color-primary); font-weight: 700; text-decoration: none;">Regístrate aquí</a>
         </div>
       </form>
 
     <!-- PESTAÑA 2: REGISTRO DE NUEVO CLIENTE -->
     <?php else: ?>
-      <form action="auth.php?tab=register&redirect=<?= urlencode($redirect) ?>" method="POST" style="display: flex; flex-direction: column; gap: 1.15rem;">
+      <form action="auth.php?tab=register" method="POST" style="display: flex; flex-direction: column; gap: 1.15rem;">
         <input type="hidden" name="action" value="register">
+        <input type="hidden" name="redirect" value="<?= h($redirect) ?>">
+        <input type="hidden" name="reason" value="<?= h($reason) ?>">
 
         <div>
           <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--color-neutral-dark); margin-bottom: 0.35rem;">Nombre Completo *</label>
@@ -245,7 +276,7 @@ require __DIR__ . '/includes/header.php';
 
         <div style="text-align: center; font-size: 0.85rem; color: var(--color-neutral-medium); margin-top: 0.5rem;">
           ¿Ya tienes una cuenta registrada? 
-          <a href="?tab=login&redirect=<?= urlencode($redirect) ?>" style="color: var(--color-primary); font-weight: 700; text-decoration: none;">Inicia sesión aquí</a>
+          <a href="?tab=login&redirect=<?= urlencode($redirect) ?>&reason=<?= urlencode($reason) ?>" style="color: var(--color-primary); font-weight: 700; text-decoration: none;">Inicia sesión aquí</a>
         </div>
       </form>
     <?php endif; ?>

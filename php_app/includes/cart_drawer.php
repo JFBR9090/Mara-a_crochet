@@ -94,6 +94,11 @@ $baseUrl = getBaseUrl();
         </svg>
         Comprar Ahora (Finalizar Compra) &rarr;
       </a>
+      <?php if (!isCustomerLoggedIn()): ?>
+        <div style="font-size: 0.72rem; color: var(--color-primary); text-align: center; margin-top: -0.2rem; margin-bottom: 0.2rem; font-weight: 600;">
+          🔒 Ingresaste como invitado: se solicitará iniciar sesión o registrarte para pagar
+        </div>
+      <?php endif; ?>
       <a href="<?= $baseUrl ?>/cart.php" class="btn btn-outlined btn-sm" style="width: 100%; justify-content: center; font-weight: 600;">
         Ver Canasta Detallada
       </a>

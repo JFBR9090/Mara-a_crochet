@@ -457,11 +457,165 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // =========================================================================
+  // 7. CONTROLADOR DE MODAL / PESTAÑA DE BIENVENIDA Y ACCESO (USUARIO / ADMIN / INVITADO)
+  // =========================================================================
+  const authModalOverlay = document.getElementById('marana-auth-modal-overlay');
+  const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
+  const btnContinueGuest = document.getElementById('btn-continue-guest');
+  const isCustomerLogged = document.body.getAttribute('data-customer-logged') === '1';
+  const isAdminLogged = document.body.getAttribute('data-admin-logged') === '1';
+
+  function openAuthModal(role = 'user', subTab = 'login') {
+    if (!authModalOverlay) return;
+    switchAuthRole(role);
+    if (role === 'user') {
+      switchUserSubTab(subTab);
+    }
+    authModalOverlay.style.display = 'flex';
+    // Forzar reflow para animación CSS
+    void authModalOverlay.offsetWidth;
+    authModalOverlay.classList.add('open');
+    authModalOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAuthModal() {
+    if (!authModalOverlay) return;
+    authModalOverlay.classList.remove('open');
+    authModalOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!authModalOverlay.classList.contains('open')) {
+        authModalOverlay.style.display = 'none';
+      }
+    }, 250);
+  }
+
+  function continueAsGuest() {
+    sessionStorage.setItem('marana_auth_dismissed', '1');
+    closeAuthModal();
+    showToast(
+      'Bienvenida/o como Invitada/o 🧶',
+      'Puedes recorrer la tienda. Recuerda que para comprar será necesario registrarte o iniciar sesión.',
+      'info'
+    );
+  }
+
+  function switchAuthRole(role) {
+    const tabUser = document.getElementById('role-tab-user');
+    const tabAdmin = document.getElementById('role-tab-admin');
+    const panelUser = document.getElementById('role-panel-user');
+    const panelAdmin = document.getElementById('role-panel-admin');
+
+    if (!tabUser || !tabAdmin || !panelUser || !panelAdmin) return;
+
+    if (role === 'admin') {
+      tabAdmin.classList.add('active');
+      tabAdmin.setAttribute('aria-selected', 'true');
+      tabUser.classList.remove('active');
+      tabUser.setAttribute('aria-selected', 'false');
+
+      panelAdmin.style.display = 'block';
+      panelUser.style.display = 'none';
+
+      // Autofocus en campo de usuario admin
+      setTimeout(() => {
+        const adminInput = document.getElementById('modal-admin-username');
+        if (adminInput) adminInput.focus();
+      }, 100);
+    } else {
+      tabUser.classList.add('active');
+      tabUser.setAttribute('aria-selected', 'true');
+      tabAdmin.classList.remove('active');
+      tabAdmin.setAttribute('aria-selected', 'false');
+
+      panelUser.style.display = 'block';
+      panelAdmin.style.display = 'none';
+    }
+  }
+
+  function switchUserSubTab(subTab) {
+    const tabLogin = document.getElementById('subtab-login');
+    const tabRegister = document.getElementById('subtab-register');
+    const subpanelLogin = document.getElementById('user-subpanel-login');
+    const subpanelRegister = document.getElementById('user-subpanel-register');
+
+    if (!tabLogin || !tabRegister || !subpanelLogin || !subpanelRegister) return;
+
+    if (subTab === 'register') {
+      tabRegister.classList.add('active');
+      tabLogin.classList.remove('active');
+      subpanelRegister.style.display = 'block';
+      subpanelLogin.style.display = 'none';
+
+      setTimeout(() => {
+        const regInput = document.getElementById('modal-reg-name');
+        if (regInput) regInput.focus();
+      }, 100);
+    } else {
+      tabLogin.classList.add('active');
+      tabRegister.classList.remove('active');
+      subpanelLogin.style.display = 'block';
+      subpanelRegister.style.display = 'none';
+
+      setTimeout(() => {
+        const loginInput = document.getElementById('modal-login-email');
+        if (loginInput) loginInput.focus();
+      }, 100);
+    }
+  }
+
+  // Event Listeners del Modal
+  if (btnCloseAuthModal) {
+    btnCloseAuthModal.addEventListener('click', continueAsGuest);
+  }
+
+  if (btnContinueGuest) {
+    btnContinueGuest.addEventListener('click', continueAsGuest);
+  }
+
+  if (authModalOverlay) {
+    authModalOverlay.addEventListener('click', (e) => {
+      if (e.target === authModalOverlay) {
+        continueAsGuest();
+      }
+    });
+  }
+
+  // Exponer a nivel global
+  window.openAuthModal = openAuthModal;
+  window.closeAuthModal = closeAuthModal;
+  window.switchAuthRole = switchAuthRole;
+  window.switchUserSubTab = switchUserSubTab;
+  window.continueAsGuest = continueAsGuest;
+
+  // Apertura Automática al Ingresar al Sitio si no ha iniciado sesión
+  // y no ha cerrado la pestaña en esta sesión de navegación:
+  const isAuthDismissed = sessionStorage.getItem('marana_auth_dismissed') === '1';
+  const urlParams = new URLSearchParams(window.location.search);
+  const hash = window.location.hash;
+
+  if (urlParams.get('open_auth') === '1' || hash === '#auth' || hash === '#login') {
+    setTimeout(() => openAuthModal('user', 'login'), 200);
+  } else if (hash === '#register') {
+    setTimeout(() => openAuthModal('user', 'register'), 200);
+  } else if (hash === '#admin') {
+    setTimeout(() => openAuthModal('admin'), 200);
+  } else if (!isCustomerLogged && !isAdminLogged && !isAuthDismissed) {
+    // Si es un visitante nuevo ingresando a la tienda:
+    // Mostrar automáticamente la pestaña con las opciones de inicio de sesión, registro o admin
+    setTimeout(() => {
+      openAuthModal('user', 'login');
+    }, 400);
+  }
+
   // Tecla Escape cierra modales
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeCart();
       closeQuickView();
+      closeAuthModal();
     }
   });
 });

@@ -76,6 +76,9 @@ $baseUrl = getBaseUrl();
   </div>
 </footer>
 
+<!-- Include Auth & Role Modal (Usuario / Admin / Invitado) -->
+<?php require __DIR__ . '/auth_modal.php'; ?>
+
 <!-- Include Cart Drawer Panel -->
 <?php require __DIR__ . '/cart_drawer.php'; ?>
 
